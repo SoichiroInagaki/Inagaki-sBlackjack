@@ -9,6 +9,9 @@
 <body>
 	<h1>-Blackjack-</h1>
 	<h3>ここはゲーム画面</h3>
+	<form action="GameServlet" method="get">
+		<button type="submit">ゲームを開始する</button>
+	</form>
 	<p><a href="menu.jsp">メインメニュー画面に戻る</a></p>
 
 
