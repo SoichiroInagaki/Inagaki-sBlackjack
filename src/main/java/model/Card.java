@@ -29,11 +29,11 @@ public class Card {
 	public String getCard() {
 		switch(getNumber()) {
 			case 11:
-				return (getMark() + "J");
+				return (getMark() + "のJ");
 			case 12:
-				return (getMark() + "Q");
+				return (getMark() + "のQ");
 			case 13:
-				return (getMark() + "K");
+				return (getMark() + "のK");
 			default:
 				return (getMark() + Integer.toString(number));
 		}
