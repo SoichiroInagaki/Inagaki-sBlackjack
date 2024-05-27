@@ -14,6 +14,7 @@ public abstract class Gambler {
 		hand = new ArrayList<>();
 		hand.add(deck.drawCard());
 		hand.add(deck.drawCard());
+		calculatePoint();
 	}
 	
 	//カードを引くメソッド、抽象メソッド
