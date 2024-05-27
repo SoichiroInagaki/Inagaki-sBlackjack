@@ -55,5 +55,15 @@ public abstract class Gambler {
 	public int getPoint() {
 		return point;
 	}
-
+	
+	//手札のカードを取得するメソッド
+	public String getHandCard(int i) {
+		String strCard = hand.get(i).getCard();
+		return strCard;
+	}
+	
+	//手札のカードの枚数を取得するメソッド
+	public int countHand() {
+		return hand.size();
+	}
 }
