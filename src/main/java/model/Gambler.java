@@ -5,9 +5,9 @@ import java.util.List;
 
 public abstract class Gambler {
 	
-	private List<Card> hand;
-	private int point;
-	private boolean burst;
+	protected List<Card> hand;
+	protected int point;
+	protected boolean burst;
 	
 	//ゲーム開始時、カードを2枚引く
 	public void prepareHand(Deck deck) {
@@ -17,7 +17,7 @@ public abstract class Gambler {
 	}
 	
 	//カードを引くメソッド、抽象メソッド
-	public abstract void hit();
+	public abstract void hit(Deck deck);
 	
 	//バースト状態を確認するメソッド
 	public boolean confirmBurst() {
