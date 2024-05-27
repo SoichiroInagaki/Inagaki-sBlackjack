@@ -1,40 +1,33 @@
 package controller;
 
+import java.io.IOException;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import model.Dealer;
+import model.Deck;
+import model.PlayerInGame;
 
-/**
- * Servlet implementation class PlayServlet
- */
-public class PlayServlet extends HttpServlet {
+@WebServlet("/GameServlet")
+public class GameServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public PlayServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		Deck deck = new Deck();
+		PlayerInGame playerInGame = new PlayerInGame();
+		Dealer dealer = new Dealer();
+		
+		playerInGame.prepareHand(deck);
+		dealer.prepareHand(deck);
+		
+		request.setAttribute("playerInGame", playerInGame);
+		request.setAttribute("dealer", dealer);
+		
+		request.getRequestDispatcher("InGame.jsp");
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
-
 }
