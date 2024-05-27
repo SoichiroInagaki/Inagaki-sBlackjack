@@ -13,15 +13,15 @@
 		PlayerInGame playerInGame = 
 			(PlayerInGame) session.getAttribute("playerInGame");
 	%>
-	<p>ディーラーの手札は<%=dealer.hand.get(0)%>と裏向きのカード1枚です</p>
+	<p>ディーラーの手札は<%=dealer.getHandCard(0)%>と裏向きのカード1枚です</p>
 
 	<ul>あなたの手札は、
-		<% for(Card card : playerInGame.hand){ %>
-		<li><%=card.getCard()%></li>
+		<% for(int i = 0; i < dealer.countHand(); i++ ){ %>
+		<li><%=playerInGame.getHandCard(i)%></li>
 		<%}%>
 	</ul>です
 	<br>
-	<p>現在のカードの合計は<%=playerInGame.getPoint()%>です</p>
+	<p>現在のカードの数値の合計は<%=playerInGame.getPoint()%>です</p>
 	<p>行うアクションを選んでください</p>
 	<form action="GameServlet" method="post">
 		<button type="submit" name="clicked" value="hit">HIT</button>
