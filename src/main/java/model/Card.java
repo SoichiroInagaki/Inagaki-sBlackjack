@@ -35,7 +35,7 @@ public class Card {
 			case 13:
 				return (getMark() + "のK");
 			default:
-				return (getMark() + Integer.toString(number));
+				return (getMark() +"の" + Integer.toString(number));
 		}
 	}
 }
