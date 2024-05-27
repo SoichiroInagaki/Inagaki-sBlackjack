@@ -9,7 +9,7 @@
 </head>
 <body>
 	<%
-		Dealer dealer = (dealer) session.getAttribute("dealer");
+		Dealer dealer = (Dealer) session.getAttribute("dealer");
 		PlayerInGame playerInGame = 
 			(PlayerInGame) session.getAttribute("playerInGame");
 	%>
