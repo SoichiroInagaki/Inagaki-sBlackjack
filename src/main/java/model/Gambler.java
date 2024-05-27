@@ -30,7 +30,7 @@ public abstract class Gambler {
 	}
 	
 	//現在の点数を計算するメソッド
-	public int calculatePoint() {
+	public void calculatePoint() {
 		for(Card card : hand) {
 			switch(card.getNumber()) {
 				case 1:
@@ -48,6 +48,10 @@ public abstract class Gambler {
 					point += card.getNumber();
 			}
 		}
+	}
+	
+	//現在の点数を返すメソッド
+	public int getPoint() {
 		return point;
 	}
 
