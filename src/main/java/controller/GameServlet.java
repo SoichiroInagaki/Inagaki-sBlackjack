@@ -7,6 +7,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.Dealer;
 import model.Deck;
 import model.PlayerInGame;
@@ -15,7 +16,7 @@ import model.PlayerInGame;
 public class GameServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    
+    //ゲーム開始時に用いるメソッド
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		Deck deck = new Deck();
@@ -25,9 +26,20 @@ public class GameServlet extends HttpServlet {
 		playerInGame.prepareHand(deck);
 		dealer.prepareHand(deck);
 		
-		request.setAttribute("playerInGame", playerInGame);
-		request.setAttribute("dealer", dealer);
+		HttpSession session = request.getSession();
+		session.setAttribute("playerInGame", playerInGame);
+		session.setAttribute("dealer", dealer);
 		
 		request.getRequestDispatcher("InGame.jsp");
+	}
+	
+	//ゲーム進行中に用いるメソッド
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String nextpage = null;
+		
+		if(request.getParameter("clicked").equals("hit")) {
+			
+		}
+		
 	}
 }
