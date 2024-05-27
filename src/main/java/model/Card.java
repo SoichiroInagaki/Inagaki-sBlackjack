@@ -28,6 +28,8 @@ public class Card {
 	
 	public String getCard() {
 		switch(getNumber()) {
+			case 1:
+				return (getMark() + "のA");
 			case 11:
 				return (getMark() + "のJ");
 			case 12:
