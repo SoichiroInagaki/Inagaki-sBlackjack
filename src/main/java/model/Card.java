@@ -2,8 +2,8 @@ package model;
 
 public class Card {
 	
-	String mark;
-	int number;
+	private String mark;
+	private int number;
 	
 	public Card(String mark, int number) {
 		this.mark = mark;
