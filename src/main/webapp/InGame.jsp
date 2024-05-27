@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="model.Dealer" import="PlayerInGame"
+    import="model.Card"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,9 +9,9 @@
 </head>
 <body>
 	<%
-		Dealer dealer = (dealer) request.getAttribute("dealer");
+		Dealer dealer = (dealer) session.getAttribute("dealer");
 		PlayerInGame playerInGame = 
-			(PlayerInGame) request.getAttribute("playerInGame");
+			(PlayerInGame) session.getAttribute("playerInGame");
 	%>
 	<p>ディーラーの手札は<%=dealer.hand.get(0)%>と裏向きのカード1枚です</p>
 
