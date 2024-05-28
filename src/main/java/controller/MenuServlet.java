@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet("/MenuServlet")
 public class MenuServlet extends HttpServlet {
 	
-	//押下されたボタンに対応したページのサーブレットに遷移
+	//押下されたボタンに対応したページ・サーブレットに遷移
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		//遷移先のページを代入する変数を用意
