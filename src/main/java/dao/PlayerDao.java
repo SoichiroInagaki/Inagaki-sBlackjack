@@ -261,4 +261,74 @@ public class PlayerDao {
 	}
 	
 	
+	public Player getRecord(Player player) throws BlackjackException {
+		
+		//戻り値用の変数を用意
+		Player playerForRecord = null;
+		
+		try {
+			getConnection();
+			
+			//プレイヤー名・勝敗内訳をDBから取得
+			String sql = 
+					"select t1.player_name, t2.winning_game, t2.lost_game, t2.drawn_game "
+					+ "from player as t1 inner join record as t2 on t1.id = t2.player_id "
+					+ "where t1.id = ?";
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, player.getId());
+			rs = ps.executeQuery();
+			
+			//数値を勝率・試合数に変換
+			//プレイヤー名・勝率・試合数を戻り値用変数にセット
+			while(rs.next()) {
+				String playerName = rs.getString("player_name");
+				int playerWinRate = 
+						(rs.getInt("winning_game") / (rs.getInt("winning_game") + rs.getInt("lost_game")));
+				int playerGames = 
+						(rs.getInt("winning_game") + rs.getInt("lost_game") + rs.getInt("drawn_game"));
+				playerForRecord = new Player(playerName, playerWinRate, playerGames);
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+			throw new BlackjackException("SQL実行中に例外が発生しました");
+		}finally {
+			close();
+		}
+		return playerForRecord;
+	}
+	
+	
+	public Player[] getRankedRecords() throws BlackjackException {
+		
+		Player[] rankedRecords = new Player[5];
+		
+		try {
+			getConnection();
+			
+			String sql = 
+					"select t1.player_name, t2.winning_game, t2.lost_game, t2.drawn_game "
+					+ "from player as t1 inner join record as t2 on t1.id = t2.player_id "
+					+ "order by (t2.winning_game / (t2.winning_game + t2.lost_game)) desc"
+					+ "limit 5";
+			ps = con.prepareStatement(sql);
+			rs = ps.executeQuery();
+			
+			for(int i = 0; i < 5; i++) {
+				rs.next();
+				String playerName = rs.getString("player_name");
+				int playerWinRate = 
+						(rs.getInt("winning_game") / (rs.getInt("winning_game") + rs.getInt("lost_game")));
+				int playerGames = 
+						(rs.getInt("winning_game") + rs.getInt("lost_game") + rs.getInt("drawn_game"));
+				rankedRecords[i] = new Player(playerName, playerWinRate, playerGames);
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+			throw new BlackjackException("SQL実行中に例外が発生しました");
+		}finally {
+			close();
+		}
+		return rankedRecords;
+	}
+	
 }
