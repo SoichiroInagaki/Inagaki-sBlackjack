@@ -59,7 +59,7 @@ public class GameServlet extends HttpServlet {
 			if(dealer.confirmBurst()) {
 				nextPage = "win-end.jsp";
 				message = "ディーラーはバーストしました！";
-				request.setAttribute("dealerBursted", message);
+				request.setAttribute("burstedDealer", message);
 			}else {
 				if(dealer.getPoint() < playerInGame.getPoint()) {
 					if(playerInGame.getPoint() == 21) {
