@@ -12,7 +12,6 @@
 		PlayerInGame playerInGame = 
 			(PlayerInGame) session.getAttribute("playerInGame");
 		Integer countedHit = (Integer) request.getAttribute("countHit");
-		String message = (String) request.getAttribute("message");
 	%>
 	<ul>あなたの手札は、
 		<% for(int i = 0; i < playerInGame.countHand(); i++ ){ %>
@@ -21,9 +20,6 @@
 	</ul>です
 	<br>
 	<p>カードの数値の合計は<%=playerInGame.getPoint()%>です</p>
-	<% if(!(message.equals(null))){%>
-		<p><%=message%></p>
-	<%}%>
 	<ul>ディーラーの初期手札は、
 		<li><%=dealer.getHandCard(0)%></li>
 		<li><%=dealer.getHandCard(1)%></li>
