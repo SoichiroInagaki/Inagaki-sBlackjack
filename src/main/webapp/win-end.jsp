@@ -22,7 +22,7 @@
 	</ul>です
 	<br>
 	<p>カードの数値の合計は<%=playerInGame.getPoint()%>です</p>
-	<% if(!(blackjack.equals(null))){%>
+	<% if(!(blackjack == null)){%>
 		<p><%=blackjack%></p>
 	<%}%>
 	<ul>ディーラーの初期手札は、
@@ -41,7 +41,7 @@
 			</ul>
 		<%}%>
 	<p>ディーラーの数値の合計は<%=dealer.getPoint()%>で、
-	<%if(!(burstedDealer.equals(null))){%>
+	<%if(!(burstedDealer == null)){%>
 		<%=burstedDealer%>
 	<%}else{%>
 		あなたの方が21に近いため、あなたの勝利です！</p>
