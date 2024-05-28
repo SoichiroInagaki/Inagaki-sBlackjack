@@ -62,16 +62,16 @@ public class GameServlet extends HttpServlet {
 			}else {
 				if(dealer.getPoint() < playerInGame.getPoint()) {
 					if(playerInGame.getPoint() == 21) {
-						nextPage = "win-End";
+						nextPage = "win-end.jsp";
 						message = "BLACKJACK!!";
 						request.setAttribute("message", message);
 					}else {
-						nextPage = "win-end";
+						nextPage = "win-end.jsp";
 					}
 				}else if(dealer.getPoint() == playerInGame.getPoint()) {
-					nextPage = "draw-end";
+					nextPage = "draw-end.jsp";
 				}else {
-					nextPage = "lose-end";
+					nextPage = "lose-end.jsp";
 				}
 			}
 		}
