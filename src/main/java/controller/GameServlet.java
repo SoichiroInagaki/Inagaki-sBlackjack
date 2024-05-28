@@ -2,6 +2,8 @@ package controller;
 
 import java.io.IOException;
 
+import dao.PlayerDao;
+import exception.BlackjackException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -10,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Dealer;
 import model.Deck;
+import model.Player;
 import model.PlayerInGame;
 
 @WebServlet("/GameServlet")
@@ -39,43 +42,62 @@ public class GameServlet extends HttpServlet {
 		String nextPage = null;
 		String message = null;
 		HttpSession session = request.getSession();
+		Player player = (Player) session.getAttribute("player");
 		Dealer dealer = (Dealer) session.getAttribute("dealer");
 		PlayerInGame playerInGame = (PlayerInGame) 
 				session.getAttribute("playerInGame");
 		Deck deck = (Deck) session.getAttribute("deck");
 		
-		if(request.getParameter("clicked").equals("hit")) {
-			playerInGame.hit(deck);
-			if(playerInGame.confirmBurst()) {
-				nextPage = "burst-end.jsp";
-			}else {
-				nextPage = "in-game.jsp";
-				message = "ヒットしました";
-				request.setAttribute("message", message);
-			}
-		}else {
-			dealer.hit(deck);
-			request.setAttribute("countHit", dealer.countHit());
-			if(dealer.confirmBurst()) {
-				nextPage = "win-end.jsp";
-				message = "ディーラーはバーストしました！";
-				request.setAttribute("burstedDealer", message);
-			}else {
-				if(dealer.getPoint() < playerInGame.getPoint()) {
-					if(playerInGame.countHand() == 2 && playerInGame.getPoint() == 21) {
-						nextPage = "win-end.jsp";
-						message = "BLACKJACK!!";
-						request.setAttribute("blackjack", message);
-					}else {
-						nextPage = "win-end.jsp";
-					}
-				}else if(dealer.getPoint() == playerInGame.getPoint()) {
-					nextPage = "draw-end.jsp";
+		try {
+			PlayerDao playerDao = new PlayerDao();
+			
+			if(request.getParameter("clicked").equals("hit")) {
+				playerInGame.hit(deck);
+				if(playerInGame.confirmBurst()) {
+					playerDao.updateRecord(player, "lose");
+					nextPage = "burst-end.jsp";
 				}else {
-					nextPage = "lose-end.jsp";
+					nextPage = "in-game.jsp";
+					message = "ヒットしました";
+					request.setAttribute("message", message);
+				}
+			}else {
+				dealer.hit(deck);
+				request.setAttribute("countHit", dealer.countHit());
+				if(dealer.confirmBurst()) {
+					playerDao.updateRecord(player, "win");
+					nextPage = "win-end.jsp";
+					message = "ディーラーはバーストしました！";
+					request.setAttribute("burstedDealer", message);
+				}else {
+					if(dealer.getPoint() < playerInGame.getPoint()) {
+						if(playerInGame.countHand() == 2 && playerInGame.getPoint() == 21) {
+							playerDao.updateRecord(player, "win");
+							nextPage = "win-end.jsp";
+							message = "BLACKJACK!!";
+							request.setAttribute("blackjack", message);
+						}else {
+							playerDao.updateRecord(player, "win");
+							nextPage = "win-end.jsp";
+						}
+					}else if(dealer.getPoint() == playerInGame.getPoint()) {
+						playerDao.updateRecord(player, "draw");
+						nextPage = "draw-end.jsp";
+					}else {
+						playerDao.updateRecord(player, "lose");
+						nextPage = "lose-end.jsp";
+					}
 				}
 			}
+			request.getRequestDispatcher(nextPage).forward(request, response);
+		}catch(BlackjackException e) {
+			
+			//エラーメッセージを表示させる
+			message = e.getMessage();
+			request.setAttribute("message", message);
+			
+			//画面遷移先はログイン画面を指定
+			nextPage = "play.jsp";
 		}
-		request.getRequestDispatcher(nextPage).forward(request, response);
 	}
 }
