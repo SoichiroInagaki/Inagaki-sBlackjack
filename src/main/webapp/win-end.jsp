@@ -35,8 +35,9 @@
 		<%}else{%>
 			ディーラーは追加で<%=countedHit%>枚カードを引きました</p>
 			<ul>追加されたカードは以下の通りです
-			<%for(int i = 0; i < (dealer.countHand() -2); i++){%>
-				<li>dealer.getHandCard(i + 2);</li>
+				<%for(int i = 0; i < (dealer.countHand() -2); i++){%>
+					<li><%=dealer.getHandCard(i + 2)%></li>
+				<%}%>
 			</ul>
 		<%}%>
 	<p>ディーラーの数値の合計は<%=dealer.getPoint()%>で、

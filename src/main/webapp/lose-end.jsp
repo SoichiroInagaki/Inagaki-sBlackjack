@@ -20,7 +20,6 @@
 	</ul>です
 	<br>
 	<p>カードの数値の合計は<%=playerInGame.getPoint()%>です</p>
-	<%}%>
 	<ul>ディーラーの初期手札は、
 		<li><%=dealer.getHandCard(0)%></li>
 		<li><%=dealer.getHandCard(1)%></li>
@@ -32,7 +31,8 @@
 			ディーラーは追加で<%=countedHit%>枚カードを引きました</p>
 			<ul>追加されたカードは以下の通りです
 			<%for(int i = 0; i < (dealer.countHand() -2); i++){%>
-			<li>dealer.getHandCard(i + 2);</li>
+				<li><%=dealer.getHandCard(i + 2)%></li>
+			<%}%>
 			</ul>
 		<%}%>
 	<p>ディーラーの数値の合計は<%=dealer.getPoint()%>で、ディーラーの方が21に近いため、ディーラーの勝利です</p>

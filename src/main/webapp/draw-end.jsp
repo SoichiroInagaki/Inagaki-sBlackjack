@@ -15,7 +15,7 @@
 	%>
 	<ul>あなたの手札は、
 		<% for(int i = 0; i < playerInGame.countHand(); i++ ){ %>
-		<li><%=playerInGame.getHandCard(i)%></li>
+			<li><%=playerInGame.getHandCard(i)%></li>
 		<%}%>
 	</ul>です
 	<br>
@@ -30,8 +30,9 @@
 		<%}else{%>
 			ディーラーは追加で<%=countedHit%>枚カードを引きました</p>
 			<ul>追加されたカードは以下の通りです
-			<%for(int i = 0; i < (dealer.countHand() -2); i++){%>
-			<li>dealer.getHandCard(i + 2);</li>
+				<%for(int i = 0; i < (dealer.countHand() -2); i++){%>
+					<li><%=dealer.getHandCard(i + 2)%></li>
+				<%}%>
 			</ul>
 		<%}%>
 	<p>ディーラーの数値の合計は<%=dealer.getPoint()%>で、合計点数が同じなので、今回の勝負は引き分けです</p>
