@@ -139,9 +139,10 @@ public class PlayerDao {
 			
 			//検索に該当したプレイヤーがいれば、そのプレイヤーをインスタンス化して変数に代入
 			while(rs.next()) {
-				String PlayerName = rs.getString("player_name");
-				String PlayerPassword = rs.getString("player_password");
-				player = new Player(PlayerName, PlayerPassword);
+				int playerId = rs.getInt("id");
+				String playerName = rs.getString("player_name");
+				String playerPassword = rs.getString("player_password");
+				player = new Player(playerId, playerName, playerPassword);
 			}
 			
 			//該当プレイヤーがいなければ、エラーメッセージを表示させる
