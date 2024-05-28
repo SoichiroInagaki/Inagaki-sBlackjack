@@ -5,6 +5,8 @@ public class Player {
 	private int id;
 	private String name;
 	private String password;
+	private int winRate;
+	private int games;
 	
 	public Player(String name, String password) {
 		this.name = name;
@@ -15,6 +17,12 @@ public class Player {
 		this.id = id;
 		this.name = name;
 		this.password = password;
+	}
+	
+	public Player(String name, int winRate, int games) {
+		this.name = name;
+		this.winRate = winRate;
+		this.games = games;
 	}
 	
 	public int getId() {
@@ -39,5 +47,21 @@ public class Player {
 	
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public int getWinRate() {
+		return winRate;
+	}
+	
+	public void setWinRate(int winRate) {
+		this.winRate = winRate;
+	}
+	
+	public int getGames() {
+		return games;
+	}
+	
+	public void setGames(int games) {
+		this.games = games;
 	}
 }
