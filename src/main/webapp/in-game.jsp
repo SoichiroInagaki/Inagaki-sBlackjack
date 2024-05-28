@@ -16,7 +16,7 @@
 	<p>ディーラーの手札は<%=dealer.getHandCard(0)%>と裏向きのカード1枚です</p>
 
 	<ul>あなたの手札は、
-		<% for(int i = 0; i < dealer.countHand(); i++ ){ %>
+		<% for(int i = 0; i < playerInGame.countHand(); i++ ){ %>
 		<li><%=playerInGame.getHandCard(i)%></li>
 		<%}%>
 	</ul>です
