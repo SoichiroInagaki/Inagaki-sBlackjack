@@ -7,6 +7,10 @@
 <title>Blackjack</title>
 </head>
 <body>
+	<%
+		PlayerInGame playerInGame = 
+			(PlayerInGame) session.getAttribute("playerInGame");
+	%>
 	<p>ヒットしました</p>
 	<ul>あなたの手札は、
 		<% for(int i = 0; i < playerInGame.countHand(); i++ ){ %>
