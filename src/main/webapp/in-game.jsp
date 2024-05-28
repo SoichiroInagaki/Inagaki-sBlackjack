@@ -15,6 +15,12 @@
 	%>
 	<p>ディーラーの手札は<%=dealer.getHandCard(0)%>と裏向きのカード1枚です</p>
 
+	<%
+		String message = (Stirng) request.getAttribute("messaeg");
+		if(message != null){
+	%>
+	<p><%=message%></p>
+	<%}%>
 	<ul>あなたの手札は、
 		<% for(int i = 0; i < playerInGame.countHand(); i++ ){ %>
 		<li><%=playerInGame.getHandCard(i)%></li>
