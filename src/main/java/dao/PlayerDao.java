@@ -52,7 +52,6 @@ public class PlayerDao {
 			if(rs != null) {
 				rs.close();
 			}
-			System.out.println("closeしました");
 		}catch(SQLException e) {
 			e.printStackTrace();
 			throw new BlackjackException("close処理中に例外が発生しました");
