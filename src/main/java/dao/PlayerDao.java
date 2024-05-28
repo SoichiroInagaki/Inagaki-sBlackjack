@@ -92,6 +92,46 @@ public class PlayerDao {
 	}
 
 	
+	//プレイヤーを探すメソッド
+	public Player findPlayer(String EnterdName, String EnterdPassword) throws BlackjackException {
+			
+		//返す変数を用意
+		Player player = null;
+			
+		try {
+			//DBに接続
+			getConnection();
+				
+			//SQLでプレイヤーを検索
+			String sql = "select * from player where player_name = ? and player_password = ?";
+			ps = con.prepareStatement(sql);
+			ps.setString(1, EnterdName);
+			ps.setString(2, EnterdPassword);
+			rs = ps.executeQuery();
+				
+			//検索に該当したプレイヤーがいれば、そのプレイヤーをインスタンス化して変数に代入
+			while(rs.next()) {
+				int playerId = rs.getInt("id");
+				String playerName = rs.getString("player_name");
+				String playerPassword = rs.getString("player_password");
+				player = new Player(playerId, playerName, playerPassword);
+			}
+				
+			//該当プレイヤーがいなければ、エラーメッセージを表示させる
+			if(player == null) {
+				throw new BlackjackException("入力内容に誤りがあります。");
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+			throw new BlackjackException("SQL実行中に例外が発生しました");
+		}finally {
+			close();
+		}
+		//検索に該当したプレイヤーかnullを返す
+		return player;
+	}
+		
+	
 	//新規プレイヤーをDBに登録するメソッド
 	public void insertPlayer(Player player) throws BlackjackException {
 		try {
@@ -109,70 +149,48 @@ public class PlayerDao {
 			ps.setString(1, playerName);
 			ps.setString(2, playerPassword);
 			ps.executeUpdate();
+			
+			//新規プレイヤーの戦績DBも作成
+			player = findPlayer(playerName, playerPassword);
+			
+			//findPlayerメソッドでcloseされているため、もう一度DB接続
+			getConnection();
+			
+			sql = "insert into record(player_id, coin) value(?, ?)";
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, player.getId());
+			ps.setInt(2, 100);
+			ps.executeUpdate();
+			
 		}catch(SQLException e) {
 			e.printStackTrace();
 			throw new BlackjackException("プレイヤーの登録に失敗しました");
-//		}catch(BlackjackException e) {
-//			throw e;
+		}catch(BlackjackException e) {
+			throw e;
 		}finally {
 			close();
 		}
 	}
 	
-	
-	//プレイヤー情報が合っているか確認するメソッド
-	public Player findPlayer(String EnterdName, String EnterdPassword) throws BlackjackException {
-		
-		//返す変数を用意
-		Player player = null;
-		
-		try {
-			//DBに接続
-			getConnection();
-			
-			//SQLでプレイヤーを検索
-			String sql = "select * from player where player_name = ? and player_password = ?";
-			ps = con.prepareStatement(sql);
-			ps.setString(1, EnterdName);
-			ps.setString(2, EnterdPassword);
-			rs = ps.executeQuery();
-			
-			//検索に該当したプレイヤーがいれば、そのプレイヤーをインスタンス化して変数に代入
-			while(rs.next()) {
-				int playerId = rs.getInt("id");
-				String playerName = rs.getString("player_name");
-				String playerPassword = rs.getString("player_password");
-				player = new Player(playerId, playerName, playerPassword);
-			}
-			
-			//該当プレイヤーがいなければ、エラーメッセージを表示させる
-			if(player == null) {
-				throw new BlackjackException("入力内容に誤りがあります。");
-			}
-		}catch(SQLException e) {
-			e.printStackTrace();
-			throw new BlackjackException("SQL実行中に例外が発生しました");
-		}finally {
-			close();
-		}
-		//検索に該当したプレイヤーかnullを返す
-		return player;
-	}
-
 	
 	//プレイヤー情報をDBから削除するメソッド
 	public void deletePlayer(Player player) throws BlackjackException {
 		
-		String playerName = player.getName();
+		int playerId = player.getId();
 		
 		try {
 			//DBに接続
 			getConnection();
 			
-			//プレイヤーを削除
-			String sql = "delete from player where player_name = ?";
+			//プレイヤーの戦績を削除
+			String sql = "delete from ? where id = ?";
 			ps = con.prepareStatement(sql);
-			ps.setString(1, playerName);
+			ps.setString(1, "record");
+			ps.setInt(2, playerId);
+			ps.executeUpdate();
+			
+			//プレイヤーを削除
+			ps.setString(1, "player");
 			ps.executeUpdate();
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -184,7 +202,62 @@ public class PlayerDao {
 		}
 	}
 	
-	
+	public void updateRecord(Player player, String result) throws BlackjackException {
+		try {
+			getConnection();
+			
+			//ログイン中のプレイヤーの戦績を取得
+			String sql = "select * from record where player_id = ?";
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, player.getId());
+			rs = ps.executeQuery();
+			
+			//戦績記録用の変数を用意
+			int record = 0;
+			
+			//勝敗で分岐
+			if(result.equals("win")) {
+				
+				//勝利数を取得
+				while(rs.next()) {
+					record = rs.getInt("winning_game");
+				}
+				
+				//勝利時用のSQL文を用意
+				sql = "update record set winning_game = ? where player_id = ?";
+			}else if(result.equals("draw")) {
+				
+				//引き分け数を取得
+				while(rs.next()) {
+					record = rs.getInt("drawn_game");
+				}
+				
+				//引き分け時用のSQL文を用意
+				sql = "update record set drawn_game = ? where player_id = ?";
+			}else {
+				
+				//敗北数を取得
+				while(rs.next()) {
+					record = rs.getInt("lost_game");
+				}
+				
+				//敗北時用のSQL文を用意
+				sql = "update record set drawn_game = ? where player_id = ?";
+			}
+			//戦績を更新
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, (record + 1));
+			ps.setInt(2, player.getId());
+			ps.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+			throw new BlackjackException("戦績の記録に失敗しました");
+		}catch(BlackjackException e) {
+			throw e;
+		}finally {
+			close();
+		}
+	}
 	
 	
 }
