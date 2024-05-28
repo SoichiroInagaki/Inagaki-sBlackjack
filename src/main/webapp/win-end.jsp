@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="model.Dealer" import="model.PlayerInGame"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +13,7 @@
 			(PlayerInGame) session.getAttribute("playerInGame");
 		Integer countedHit = (Integer) request.getAttribute("countHit");
 		String blackjack = (String) request.getAttribute("message");
-		String burstedDealer = (String) request.getAttrinbute("message");
+		String burstedDealer = (String) request.getAttribute("message");
 	%>
 	<ul>あなたの手札は、
 		<% for(int i = 0; i < playerInGame.countHand(); i++ ){ %>
