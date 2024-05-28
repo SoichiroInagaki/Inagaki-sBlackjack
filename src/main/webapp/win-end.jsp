@@ -12,7 +12,8 @@
 		PlayerInGame playerInGame = 
 			(PlayerInGame) session.getAttribute("playerInGame");
 		Integer countedHit = (Integer) request.getAttribute("countHit");
-		String message = (String) request.getAttribute("message");
+		String blackjack = (String) request.getAttribute("message");
+		String burstedDealer = (String) request.getAttrinbute("message");
 	%>
 	<ul>あなたの手札は、
 		<% for(int i = 0; i < playerInGame.countHand(); i++ ){ %>
@@ -21,8 +22,8 @@
 	</ul>です
 	<br>
 	<p>カードの数値の合計は<%=playerInGame.getPoint()%>です</p>
-	<% if(!(message.equals(null))){%>
-		<p><%=message%></p>
+	<% if(!(blackjack.equals(null))){%>
+		<p><%=blackjack%></p>
 	<%}%>
 	<ul>ディーラーの初期手札は、
 		<li><%=dealer.getHandCard(0)%></li>
@@ -38,7 +39,12 @@
 		<%for(int i = 0; i < (dealer.countHand() -2); i++){%>
 		<li>dealer.getHandCard(i + 2);</li>
 	</ul>
-	<p>ディーラーの数値の合計は<%=dealer.getPoint()%>で、あなたの方が21に近いため、あなたの勝利です！</p>
+	<p>ディーラーの数値の合計は<%=dealer.getPoint()%>で、
+	<%if(!(burstedDealer.equals(null))){%>
+		<%=burstedDealer%>
+	<%}else{%>
+		あなたの方が21に近いため、あなたの勝利です！</p>
+	<%}%>
 	<p>You Win!!</p>
 	<form action="GameServlet" method="get">
 		<button type="submit">もう一度遊ぶ</button>
