@@ -9,7 +9,10 @@ public class Dealer extends Gambler {
 			hand.add(deck.drawCard());
 			calculatePoint();
 		}
-
+	}
+	
+	public int countHit() {
+		return (countHand() -2);
 	}
 
 }
