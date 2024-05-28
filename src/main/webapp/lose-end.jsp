@@ -20,8 +20,6 @@
 	</ul>です
 	<br>
 	<p>カードの数値の合計は<%=playerInGame.getPoint()%>です</p>
-	<% if(!(blackjack.equals(null))){%>
-		<p><%=blackjack%></p>
 	<%}%>
 	<ul>ディーラーの初期手札は、
 		<li><%=dealer.getHandCard(0)%></li>
