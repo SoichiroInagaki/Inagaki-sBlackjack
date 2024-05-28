@@ -9,6 +9,14 @@
 <body>
 	<h1>-Blackjack-</h1>
 	<h3>ここはゲーム画面</h3>
+	
+	<%
+		String message = (String) request.getAttribute("message");
+		if(message != null){
+	%>
+	<p><%=message%></p>
+	<%}%>
+	
 	<form action="GameServlet" method="get">
 		<button type="submit">ゲームを開始する</button>
 	</form>
