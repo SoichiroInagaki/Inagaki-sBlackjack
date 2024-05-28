@@ -12,8 +12,8 @@
 		PlayerInGame playerInGame = 
 			(PlayerInGame) session.getAttribute("playerInGame");
 		Integer countedHit = (Integer) request.getAttribute("countHit");
-		String blackjack = (String) request.getAttribute("message");
-		String burstedDealer = (String) request.getAttribute("message");
+		String blackjack = (String) request.getAttribute("blackjack");
+		String burstedDealer = (String) request.getAttribute("burstedDealer");
 	%>
 	<ul>あなたの手札は、
 		<% for(int i = 0; i < playerInGame.countHand(); i++ ){ %>
