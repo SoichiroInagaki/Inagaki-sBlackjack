@@ -31,7 +31,7 @@ public class GameServlet extends HttpServlet {
 		session.setAttribute("playerInGame", playerInGame);
 		session.setAttribute("dealer", dealer);
 		
-		request.getRequestDispatcher("InGame.jsp").forward(request, response);;
+		request.getRequestDispatcher("in-game.jsp").forward(request, response);;
 	}
 	
 	//ゲーム進行中に用いるメソッド
