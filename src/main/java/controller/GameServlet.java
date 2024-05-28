@@ -62,7 +62,7 @@ public class GameServlet extends HttpServlet {
 				request.setAttribute("burstedDealer", message);
 			}else {
 				if(dealer.getPoint() < playerInGame.getPoint()) {
-					if(playerInGame.getPoint() == 21) {
+					if(playerInGame.countHand() == 2 && playerInGame.getPoint() == 21) {
 						nextPage = "win-end.jsp";
 						message = "BLACKJACK!!";
 						request.setAttribute("blackjack", message);
