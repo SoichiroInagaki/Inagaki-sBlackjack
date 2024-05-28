@@ -26,14 +26,14 @@
 	</ul>
 	<p>で、
 		<%if(countedHit.equals(0)){%>
-		カードの数値の合計が17点以上だったため、ディーラーはカードを追加しませんでした
+			カードの数値の合計が17点以上だったため、ディーラーはカードを追加しませんでした</p>
 		<%}else{%>
-		ディーラーは追加で<%=countedHit%>枚カードを引きました
-	</p>
-	<ul>追加されたカードは以下の通りです
-		<%for(int i = 0; i < (dealer.countHand() -2); i++){%>
-		<li>dealer.getHandCard(i + 2);</li>
-	</ul>
+			ディーラーは追加で<%=countedHit%>枚カードを引きました</p>
+			<ul>追加されたカードは以下の通りです
+			<%for(int i = 0; i < (dealer.countHand() -2); i++){%>
+			<li>dealer.getHandCard(i + 2);</li>
+			</ul>
+		<%}%>
 	<p>ディーラーの数値の合計は<%=dealer.getPoint()%>で、合計点数が同じなので、今回の勝負は引き分けです</p>
 	<p>Draw Game!</p>
 	<form action="GameServlet" method="get">
