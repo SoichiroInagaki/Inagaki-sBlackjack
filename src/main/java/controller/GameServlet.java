@@ -55,28 +55,24 @@ public class GameServlet extends HttpServlet {
 			}
 		}else {
 			dealer.hit(deck);
+			request.setAttribute("countHit", dealer.countHit());
 			if(dealer.confirmBurst()) {
 				nextPage = "win-end.jsp";
 				message = "ディーラーはバーストしました！";
 				request.setAttribute("message", message);
-				request.setAttribute("countHit", dealer.countHit());
 			}else {
 				if(dealer.getPoint() < playerInGame.getPoint()) {
 					if(playerInGame.getPoint() == 21) {
 						nextPage = "win-end.jsp";
 						message = "BLACKJACK!!";
 						request.setAttribute("message", message);
-						request.setAttribute("countHit", dealer.countHit());
 					}else {
 						nextPage = "win-end.jsp";
-						request.setAttribute("countHit", dealer.countHit());
 					}
 				}else if(dealer.getPoint() == playerInGame.getPoint()) {
 					nextPage = "draw-end.jsp";
-					request.setAttribute("countHit", dealer.countHit());
 				}else {
 					nextPage = "lose-end.jsp";
-					request.setAttribute("countHit", dealer.countHit());
 				}
 			}
 		}
