@@ -32,6 +32,7 @@ public abstract class Gambler {
 	
 	//現在の点数を計算するメソッド
 	public void calculatePoint() {
+		point = 0;
 		for(Card card : hand) {
 			switch(card.getNumber()) {
 				case 1:
