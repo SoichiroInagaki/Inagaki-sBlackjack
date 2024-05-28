@@ -183,14 +183,15 @@ public class PlayerDao {
 			getConnection();
 			
 			//プレイヤーの戦績を削除
-			String sql = "delete from ? where id = ?";
+			String sql = "delete from record where player_id = ?";
 			ps = con.prepareStatement(sql);
-			ps.setString(1, "record");
-			ps.setInt(2, playerId);
+			ps.setInt(1, playerId);
 			ps.executeUpdate();
 			
 			//プレイヤーを削除
-			ps.setString(1, "player");
+			sql = "delete from player where id = ?";
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, playerId);
 			ps.executeUpdate();
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -242,7 +243,7 @@ public class PlayerDao {
 				}
 				
 				//敗北時用のSQL文を用意
-				sql = "update record set drawn_game = ? where player_id = ?";
+				sql = "update record set lost_game = ? where player_id = ?";
 			}
 			//戦績を更新
 			ps = con.prepareStatement(sql);
