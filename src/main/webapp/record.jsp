@@ -20,7 +20,7 @@
 		Player[] rankedPlayers = (Player[]) request.getAttribute("rankedRecords");
 		for(int i = 0; i < 5; i++){
 	%>
-		<p>【<%=(i + 1)%>>】<%=rankedPlayers[i].getName()%> 勝率：
+		<p>【<%=(i + 1)%>】<%=rankedPlayers[i].getName()%> 勝率：
 			<%=String.format("%.2f", rankedPlayers[i].getWinRate())%> 
 			試合数：<%=rankedPlayers[i].getGames()%></p>
 		<%}%>
