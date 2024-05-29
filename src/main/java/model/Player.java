@@ -19,7 +19,7 @@ public class Player {
 		this.password = password;
 	}
 	
-	public Player(String name, int winRate, int games) {
+	public Player(String name, double winRate, int games) {
 		this.name = name;
 		this.winRate = winRate;
 		this.games = games;
