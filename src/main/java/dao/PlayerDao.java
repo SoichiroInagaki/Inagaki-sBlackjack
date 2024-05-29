@@ -336,6 +336,34 @@ public class PlayerDao {
 	}
 	
 	
+	//チップ保有数TOP5の記録を返すメソッド
+	public Player[] getRankingByChip() throws BlackjackException {
+		Player[] rankedPlayers = new Player[5];
+		
+		try {
+			getConnection();
+			String sql = "select player.player_name, record.coin from player "
+					+ "inner join record on player.id = record.player_id "
+					+ "order by record.coin desc limit 5";
+			ps = con.prepareStatement(sql);
+			rs = ps.executeQuery();
+			
+			for(int i = 0; i < 5; i++) {
+				rs.next();
+				String playerName = rs.getString("player_name");
+				int coin = rs.getInt("coin");
+				rankedPlayers[i] = new Player(playerName, coin);
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+			throw new BlackjackException("SQL実行中に例外が発生しました");
+		}finally {
+			close();
+		}
+		return rankedPlayers;
+	}
+	
+	
 	//掛けられたチップをDBから減らすメソッド
 	public void bet(int id, int chip) throws BlackjackException {
 		
