@@ -15,6 +15,13 @@
 	<p>ログインプレイヤー：<%=player.getName()%>
 	<%}%>
 	
+	<%
+		String message = (String) request.getAttribute("message");
+		if(message != null){
+	%>
+	<p><%=message%></p>
+	<%}%>
+	
 	<h3>ここはメインメニュー</h3>
 	<form action="MenuServlet" method="get">
 		<button type="submit" name="clicked" value="play">ブラックジャックをプレイ</button>
