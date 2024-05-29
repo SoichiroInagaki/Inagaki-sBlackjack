@@ -5,7 +5,7 @@ public class Player {
 	private int id;
 	private String name;
 	private String password;
-	private int winRate;
+	private double winRate;
 	private int games;
 	
 	public Player(String name, String password) {
@@ -49,11 +49,11 @@ public class Player {
 		this.password = password;
 	}
 	
-	public int getWinRate() {
+	public double getWinRate() {
 		return winRate;
 	}
 	
-	public void setWinRate(int winRate) {
+	public void setWinRate(double winRate) {
 		this.winRate = winRate;
 	}
 	
