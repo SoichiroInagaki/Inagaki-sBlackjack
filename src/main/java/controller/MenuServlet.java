@@ -27,7 +27,7 @@ public class MenuServlet extends HttpServlet {
 				nextPage = "play.jsp";
 				break;
 			case "record":
-				nextPage = "record.jsp";
+				nextPage = "RecordServlet";
 				break;
 			case "delete":
 				nextPage = "delete.jsp";
