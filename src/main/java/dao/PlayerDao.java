@@ -301,6 +301,7 @@ public class PlayerDao {
 	}
 	
 	
+	//勝率TOP5の記録を取得するメソッド
 	public Player[] getRankedRecords() throws BlackjackException {
 		
 		Player[] rankedRecords = new Player[5];
@@ -369,5 +370,28 @@ public class PlayerDao {
 		}finally {
 			close();
 		}
+	}
+	
+	
+	//現在保有しているチップ数を返すメソッド
+	public int getChip(int id) throws BlackjackException {
+		int chip = 0;
+		try {
+			getConnection();
+			String sql = "select coin from record where player_id = ?";
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, id);
+			rs = ps.executeQuery();
+				
+			//検索に該当したプレイヤーがいれば、そのプレイヤーをインスタンス化して変数に代入
+			rs.next();
+			chip = rs.getInt("coin");
+		}catch(SQLException e) {
+			e.printStackTrace();
+			throw new BlackjackException("SQL実行中に例外が発生しました");
+		}finally {
+			close();
+		}
+		return chip;
 	}
 }
