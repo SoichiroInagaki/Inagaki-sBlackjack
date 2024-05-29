@@ -49,7 +49,7 @@
 	<%}%>
 	<p>You Win!!</p>
 	<p>配当として、<%=cashBackedChip%>枚のチップを獲得しました！</p>
-	<form action="play.jsp" method="get">
+	<form action="PlayServlet" method="get">
 		<button type="submit">もう一度遊ぶ</button>
 	</form>
 	<p><a href="menu.jsp">メインメニュー画面に戻る</a></p>

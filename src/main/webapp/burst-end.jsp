@@ -21,7 +21,7 @@
 	<p>現在のカードの数値の合計は<%=playerInGame.getPoint()%>で、バーストしてしまいました......</p>
 	<p>You lose......</p>
 	<p>賭けていたチップは没収されました</p>
-	<form action="play.jsp" method="get">
+	<form action="PlayServlet" method="get">
 		<button type="submit">もう一度遊ぶ</button>
 	</form>
 	<p><a href="menu.jsp">メインメニュー画面に戻る</a></p>
