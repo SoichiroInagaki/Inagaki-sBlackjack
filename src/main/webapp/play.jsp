@@ -18,7 +18,22 @@
 	<%}%>
 	
 	<form action="GameServlet" method="get">
-		<button type="submit">ゲームを開始する</button>
+		<p>ベット額</p>
+		<select name="bet" required>
+			<option value="">選択してください</option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+			<option value="9">9</option>
+			<option value="10">10</option>
+		</select>
+		<br>
+		<button type="submit">賭け金を設定してゲームを開始する</button>
 	</form>
 	<p><a href="menu.jsp">メインメニュー画面に戻る</a></p>
 
