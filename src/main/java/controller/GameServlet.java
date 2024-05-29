@@ -21,7 +21,30 @@ public class GameServlet extends HttpServlet {
        
     //ゲーム開始時に用いるメソッド
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
+		HttpSession session = request.getSession();
+		
+		Player player = (Player) session.getAttribute("player");
+		int id = player.getId();
+		int chip = Integer.valueOf(request.getParameter("bet"));
+		session.setAttribute("bettingChip", chip);
+		String message = null;
+		String nextPage = null;
+		
+		try {
+			PlayerDao playerDao = new PlayerDao();
+			playerDao.bet(id, chip);
+			nextPage = "in-game.jsp";
+		}catch(BlackjackException e) {
+			
+			//エラーメッセージを表示させる
+			message = e.getMessage();
+			request.setAttribute("message", message);
+			
+			//画面遷移先はログイン画面を指定
+			nextPage = "play.jsp";
+		}
+		
 		Deck deck = new Deck();
 		PlayerInGame playerInGame = new PlayerInGame();
 		Dealer dealer = new Dealer();
@@ -29,24 +52,29 @@ public class GameServlet extends HttpServlet {
 		playerInGame.prepareHand(deck);
 		dealer.prepareHand(deck);
 		
-		HttpSession session = request.getSession();
 		session.setAttribute("deck", deck);
 		session.setAttribute("playerInGame", playerInGame);
 		session.setAttribute("dealer", dealer);
 		
-		request.getRequestDispatcher("in-game.jsp").forward(request, response);;
+		request.getRequestDispatcher(nextPage).forward(request, response);
 	}
 	
 	//ゲーム進行中に用いるメソッド
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		//遷移先・遷移先に表示するメッセージを宣言
 		String nextPage = null;
 		String message = null;
+		
+		//処理に必要な属性を取得、宣言
 		HttpSession session = request.getSession();
 		Player player = (Player) session.getAttribute("player");
 		Dealer dealer = (Dealer) session.getAttribute("dealer");
 		PlayerInGame playerInGame = (PlayerInGame) 
 				session.getAttribute("playerInGame");
 		Deck deck = (Deck) session.getAttribute("deck");
+		int chip = (Integer)session.getAttribute("bettingChip");
+		double cashBackedChip = 0;
 		
 		try {
 			PlayerDao playerDao = new PlayerDao();
@@ -69,6 +97,15 @@ public class GameServlet extends HttpServlet {
 					nextPage = "win-end.jsp";
 					message = "ディーラーはバーストしました！";
 					request.setAttribute("burstedDealer", message);
+					if(playerInGame.countHand() == 2 && playerInGame.getPoint() == 21) {
+						message = "BLACKJACK!!";
+						request.setAttribute("blackjack", message);
+						cashBackedChip = (chip * 2.5);
+						playerDao.cashBack(player.getId(), (int)cashBackedChip);
+					}else {
+						cashBackedChip = (chip * 2);
+						playerDao.cashBack(player.getId(), (int)cashBackedChip);
+					}
 				}else {
 					if(dealer.getPoint() < playerInGame.getPoint()) {
 						if(playerInGame.countHand() == 2 && playerInGame.getPoint() == 21) {
@@ -76,19 +113,26 @@ public class GameServlet extends HttpServlet {
 							nextPage = "win-end.jsp";
 							message = "BLACKJACK!!";
 							request.setAttribute("blackjack", message);
+							cashBackedChip = (chip * 2.5);
+							playerDao.cashBack(player.getId(), (int)cashBackedChip);
 						}else {
 							playerDao.updateRecord(player, "win");
 							nextPage = "win-end.jsp";
+							cashBackedChip = (chip * 2);
+							playerDao.cashBack(player.getId(), (int)cashBackedChip);
 						}
 					}else if(dealer.getPoint() == playerInGame.getPoint()) {
 						playerDao.updateRecord(player, "draw");
 						nextPage = "draw-end.jsp";
+						cashBackedChip = chip;
+						playerDao.cashBack(player.getId(), (int)cashBackedChip);
 					}else {
 						playerDao.updateRecord(player, "lose");
 						nextPage = "lose-end.jsp";
 					}
 				}
 			}
+			request.setAttribute("cashBackedChip", (int)cashBackedChip);
 			request.getRequestDispatcher(nextPage).forward(request, response);
 		}catch(BlackjackException e) {
 			
