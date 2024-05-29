@@ -24,7 +24,7 @@ public class MenuServlet extends HttpServlet {
 		//押されたボタンを判定してページの変数に代入
 		switch(request.getParameter("clicked")) {
 			case "play":
-				nextPage = "play.jsp";
+				nextPage = "PlayServlet";
 				break;
 			case "record":
 				nextPage = "RecordServlet";
