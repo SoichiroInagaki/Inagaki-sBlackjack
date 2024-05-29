@@ -308,7 +308,7 @@ public class PlayerDao {
 			String sql = 
 					"select t1.player_name, t2.winning_game, t2.lost_game, t2.drawn_game "
 					+ "from player as t1 inner join record as t2 on t1.id = t2.player_id "
-					+ "order by (t2.winning_game / (t2.winning_game + t2.lost_game)) desc"
+					+ "order by (t2.winning_game / (t2.winning_game + t2.lost_game)) desc "
 					+ "limit 5";
 			ps = con.prepareStatement(sql);
 			rs = ps.executeQuery();
