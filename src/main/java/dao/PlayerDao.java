@@ -203,6 +203,8 @@ public class PlayerDao {
 		}
 	}
 	
+	
+	//勝敗を記録するメソッド
 	public void updateRecord(Player player, String result) throws BlackjackException {
 		try {
 			getConnection();
@@ -261,6 +263,7 @@ public class PlayerDao {
 	}
 	
 	
+	//プレイヤーの戦績を取得するメソッド
 	public Player getRecord(Player player) throws BlackjackException {
 		
 		//戻り値用の変数を用意
@@ -331,4 +334,40 @@ public class PlayerDao {
 		return rankedRecords;
 	}
 	
+	
+	//掛けられたチップをDBから減らすメソッド
+	public void bet(int id, int chip) throws BlackjackException {
+		
+		try {
+			getConnection();
+			String sql = "update record set coin = (coin - ?) where player_id = ?";
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, chip);
+			ps.setInt(2, id);
+			ps.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+			throw new BlackjackException("SQL実行中に例外が発生しました");
+		}finally {
+			close();
+		}
+	}
+	
+	
+	//配当されたチップをDBに登録するメソッド
+	public void cashBack(int id, int cashBackedChip) throws BlackjackException {
+		try {
+			getConnection();
+			String sql = "update record set coin = (coin + ?) where player_id = ?";
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, cashBackedChip);
+			ps.setInt(2, id);
+			ps.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+			throw new BlackjackException("SQL実行中に例外が発生しました");
+		}finally {
+			close();
+		}
+	}
 }
