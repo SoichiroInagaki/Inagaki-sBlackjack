@@ -12,6 +12,7 @@
 	<h3>ここは戦績表示画面</h3>
 	<p>あなたの戦績は以下の通りです</p>
 	<%Player player = (Player) request.getAttribute("playerForRecord");%>
+	
 	<p><%=player.getName()%> 勝率：
 		<%=String.format("%.2f", player.getWinRate())%> 
 		試合数：<%=player.getGames()%></p>
@@ -24,6 +25,7 @@
 			<%=String.format("%.2f", rankedPlayers[i].getWinRate())%> 
 			試合数：<%=rankedPlayers[i].getGames()%></p>
 		<%}%>
+	
 	<p><a href="menu.jsp">メインメニュー画面に戻る</a></p>
 
 
