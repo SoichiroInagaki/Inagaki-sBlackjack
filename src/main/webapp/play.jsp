@@ -17,6 +17,9 @@
 	<p><%=message%></p>
 	<%}%>
 	
+	<% Integer chip = (Integer) request.getAttribute("chip");%>
+	<p>現在保有中のチップ枚数：<%=chip%></p>
+	
 	<form action="GameServlet" method="get">
 		<p>ベット額</p>
 		<select name="bet" required>
