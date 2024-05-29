@@ -21,18 +21,23 @@ public class RecordServlet extends HttpServlet {
 		String nextPage = null;
 		HttpSession session = request.getSession();
 		Player loginedPlayer = (Player) session.getAttribute("player");
-		Player playerForRecord = null;
-		Player[] rankedRecords = null;
 		
 		try {
 			PlayerDao playerDao = new PlayerDao();
-			playerForRecord = playerDao.getRecord(loginedPlayer);
-			rankedRecords = playerDao.getRankedRecords();
 			
-			request.setAttribute("playerForRecord", playerForRecord);
+//			//勝敗制度の廃止
+//			Player playerForRecord = playerDao.getRecord(loginedPlayer);
+//			Player[] rankedRecords = playerDao.getRankedRecords();
+//			request.setAttribute("playerForRecord", playerForRecord);
+//			request.setAttribute("rankedRecords", rankedRecords);
+//			nextPage = "record.jsp";
+			
+			//チップ制の導入
+			int chipOfLoginedPlayer = playerDao.getChip(loginedPlayer.getId());
+			Player[] rankedRecords = playerDao.getRankingByChip();
+			request.setAttribute("chipOfLoginedPlayer", chipOfLoginedPlayer);
 			request.setAttribute("rankedRecords", rankedRecords);
-			
-			nextPage = "record.jsp";
+			nextPage = "recordByChip.jsp";
 			
 		}catch(BlackjackException e) {
 			String message = e.getMessage();
