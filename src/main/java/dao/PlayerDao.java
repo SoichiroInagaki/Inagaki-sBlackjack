@@ -282,7 +282,7 @@ public class PlayerDao {
 			//プレイヤー名・勝率・試合数を戻り値用変数にセット
 			while(rs.next()) {
 				String playerName = rs.getString("player_name");
-				int playerWinRate = 
+				double playerWinRate = 
 						(rs.getInt("winning_game") / (rs.getInt("winning_game") + rs.getInt("lost_game")));
 				int playerGames = 
 						(rs.getInt("winning_game") + rs.getInt("lost_game") + rs.getInt("drawn_game"));
@@ -316,7 +316,7 @@ public class PlayerDao {
 			for(int i = 0; i < 5; i++) {
 				rs.next();
 				String playerName = rs.getString("player_name");
-				int playerWinRate = 
+				double playerWinRate = 
 						(rs.getInt("winning_game") / (rs.getInt("winning_game") + rs.getInt("lost_game")));
 				int playerGames = 
 						(rs.getInt("winning_game") + rs.getInt("lost_game") + rs.getInt("drawn_game"));
