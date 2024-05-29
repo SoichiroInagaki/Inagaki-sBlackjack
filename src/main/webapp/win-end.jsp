@@ -14,6 +14,7 @@
 		Integer countedHit = (Integer) request.getAttribute("countHit");
 		String blackjack = (String) request.getAttribute("blackjack");
 		String burstedDealer = (String) request.getAttribute("burstedDealer");
+		Integer cashBackedChip = (Integer) request.getAttribute("cashBackedChip");
 	%>
 	<ul>あなたの手札は、
 		<% for(int i = 0; i < playerInGame.countHand(); i++ ){ %>
@@ -47,7 +48,8 @@
 		あなたの方が21に近いため、あなたの勝利です！</p>
 	<%}%>
 	<p>You Win!!</p>
-	<form action="GameServlet" method="get">
+	<p>配当として、<%=cashBackedChip%>枚のチップを獲得しました！</p>
+	<form action="play.jsp" method="get">
 		<button type="submit">もう一度遊ぶ</button>
 	</form>
 	<p><a href="menu.jsp">メインメニュー画面に戻る</a></p>

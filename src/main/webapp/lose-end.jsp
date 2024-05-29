@@ -37,7 +37,8 @@
 		<%}%>
 	<p>ディーラーの数値の合計は<%=dealer.getPoint()%>で、ディーラーの方が21に近いため、ディーラーの勝利です</p>
 	<p>You lose......</p>
-	<form action="GameServlet" method="get">
+	<p>賭けていたチップは没収されました</p>
+	<form action="play.jsp" method="get">
 		<button type="submit">もう一度遊ぶ</button>
 	</form>
 	<p><a href="menu.jsp">メインメニュー画面に戻る</a></p>

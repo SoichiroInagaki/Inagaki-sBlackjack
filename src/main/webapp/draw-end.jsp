@@ -12,6 +12,7 @@
 		PlayerInGame playerInGame = 
 			(PlayerInGame) session.getAttribute("playerInGame");
 		Integer countedHit = (Integer) request.getAttribute("countHit");
+		Integer cashBackedChip = (Integer) request.getAttribute("cashBackedChip");
 	%>
 	<ul>あなたの手札は、
 		<% for(int i = 0; i < playerInGame.countHand(); i++ ){ %>
@@ -37,7 +38,8 @@
 		<%}%>
 	<p>ディーラーの数値の合計は<%=dealer.getPoint()%>で、合計点数が同じなので、今回の勝負は引き分けです</p>
 	<p>Draw Game!</p>
-	<form action="GameServlet" method="get">
+	<p>引き分けのため、賭けていたチップ<%=cashBackedChip%>枚が手元に戻ってきます</p>
+	<form action="play.jsp" method="get">
 		<button type="submit">もう一度遊ぶ</button>
 	</form>
 	<p><a href="menu.jsp">メインメニュー画面に戻る</a></p>
