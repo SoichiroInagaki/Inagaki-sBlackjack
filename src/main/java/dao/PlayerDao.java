@@ -283,7 +283,7 @@ public class PlayerDao {
 			while(rs.next()) {
 				String playerName = rs.getString("player_name");
 				double playerWinRate = 
-						(rs.getInt("winning_game") / (rs.getInt("winning_game") + rs.getInt("lost_game")));
+						((double)rs.getInt("winning_game") / (rs.getInt("winning_game") + rs.getInt("lost_game")));
 				int playerGames = 
 						(rs.getInt("winning_game") + rs.getInt("lost_game") + rs.getInt("drawn_game"));
 				playerForRecord = new Player(playerName, playerWinRate, playerGames);
@@ -316,8 +316,8 @@ public class PlayerDao {
 			for(int i = 0; i < 5; i++) {
 				rs.next();
 				String playerName = rs.getString("player_name");
-				double playerWinRate = 
-						(rs.getInt("winning_game") / (rs.getInt("winning_game") + rs.getInt("lost_game")));
+				double playerWinRate =
+						((double) rs.getInt("winning_game") / (rs.getInt("winning_game") + rs.getInt("lost_game")));
 				int playerGames = 
 						(rs.getInt("winning_game") + rs.getInt("lost_game") + rs.getInt("drawn_game"));
 				rankedRecords[i] = new Player(playerName, playerWinRate, playerGames);
