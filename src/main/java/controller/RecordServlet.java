@@ -18,6 +18,7 @@ public class RecordServlet extends HttpServlet {
 	//MenuServletのdoGetメソッドから連動して動作
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		String nextPage = null;
 		HttpSession session = request.getSession();
 		Player loginedPlayer = (Player) session.getAttribute("player");
 		Player playerForRecord = null;
@@ -30,11 +31,15 @@ public class RecordServlet extends HttpServlet {
 			
 			request.setAttribute("playerForRecord", playerForRecord);
 			request.setAttribute("rankedRecords", rankedRecords);
+			
+			nextPage = "record.jsp";
+			
 		}catch(BlackjackException e) {
 			String message = e.getMessage();
 			request.setAttribute("message", message);
+			nextPage = "menu.jsp";
 		}
-		request.getRequestDispatcher("record.jsp").forward(request, response);
+		request.getRequestDispatcher(nextPage).forward(request, response);
 	}
 
 	
