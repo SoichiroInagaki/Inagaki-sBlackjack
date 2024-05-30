@@ -7,7 +7,7 @@ public abstract class Gambler {
 	
 	protected List<Card> hand;
 	protected int point;
-	protected boolean burst;
+	protected boolean bust;
 	
 	//ゲーム開始時、カードを2枚引く
 	public void prepareHand(Deck deck) {
@@ -21,13 +21,13 @@ public abstract class Gambler {
 	public abstract void hit(Deck deck);
 	
 	//バースト状態を確認するメソッド
-	public boolean confirmBurst() {
+	public boolean confirmBust() {
 		if(point <= 21) {
-			burst = false;
+			bust = false;
 		}else {
-			burst = true;
+			bust = true;
 		}
-		return burst;
+		return bust;
 	}
 	
 	//現在の点数を計算するメソッド
@@ -37,7 +37,7 @@ public abstract class Gambler {
 			switch(card.getNumber()) {
 				case 1:
 					point += 11;
-					if(confirmBurst()) {
+					if(confirmBust()) {
 						point += -10;
 					}
 					break;
@@ -66,5 +66,14 @@ public abstract class Gambler {
 	//手札のカードの枚数を取得するメソッド
 	public int countHand() {
 		return hand.size();
+	}
+	
+	//初期手札がブラックジャックか確認するメソッド
+	public boolean checkBlackjack() {
+		if((countHand() == 2) && (getPoint() == 21)) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 }

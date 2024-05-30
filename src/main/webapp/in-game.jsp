@@ -11,14 +11,12 @@
 		Dealer dealer = (Dealer) session.getAttribute("dealer");
 		PlayerInGame playerInGame = 
 			(PlayerInGame) session.getAttribute("playerInGame");
+		String hit = (String) request.getAttribute("hit");
 	%>
 	<p>ディーラーの手札は<%=dealer.getHandCard(0)%>と裏向きのカード1枚です</p>
 
-	<%
-		String message = (String) request.getAttribute("messaeg");
-		if(message != null){
-	%>
-	<p><%=message%></p>
+	<% if(hit != null){ %>
+		<p><%=hit%></p>
 	<%}%>
 	<ul>あなたの手札は、
 		<% for(int i = 0; i < playerInGame.countHand(); i++ ){ %>
