@@ -20,18 +20,23 @@
 		String blackjackMessageForDealer = (String) request.getAttribute("blackjackMessageForDealer");
 		String bustedDealer = (String) request.getAttribute("bustedDealer");
 		String situationMessage = (String) request.getAttribute("situationMessage");
+		String actionAisEnd = (String) session.getAttribute("actionAisEnd");
+		String actionBisEnd = (String) session.getAttribute("actionBisEnd");
+		PlayerInGame splitA = (PlayerInGame) session.getAttribute("splitA");
+		PlayerInGame splitB = (PlayerInGame) session.getAttribute("splitB");
 	%>
 	
 	<% if(hit != null){ %>
 		<p><%=hit%></p>
 	<% } %>
-	
+	<% if() %>
 	<ul>あなたの手札は、
 		<% for(int i = 0; i < playerInGame.countHand(); i++ ){ %>
-		<li><%=playerInGame.getHandCard(i)%></li>
+		<li><%=playerInGame.getHandCardStr(i)%></li>
 		<%}%>
 	</ul>です
 	<p>カードの数値の合計は<%=playerInGame.getPoint()%>です</p>
+	<%=actionAisEnd %>
 	
 	<% if(bustedPlayer != null){ %>
 		<p><%=bustedPlayer %></p>
@@ -42,8 +47,8 @@
 			<p><%=blackjackMessageForPlayer %></p>
 		<% } %>
 		<ul>ディーラーの初期手札は、
-			<li><%=dealer.getHandCard(0)%></li>
-			<li><%=dealer.getHandCard(1)%></li>
+			<li><%=dealer.getHandCardStr(0)%></li>
+			<li><%=dealer.getHandCardStr(1)%></li>
 		</ul>です
 		<% if(blackjackMessageForDealer != null){ %>
 			<p>ディーラーの数値の合計は<%=dealer.getPoint()%>です</p>
@@ -57,7 +62,7 @@
 				<p>点数が17点以上になるように、ディーラーは追加でカードを<%=countedHit%>枚引きました</p>
 				<ul>追加されたカードは以下の通りです
 					<%for(int i = 0; i < (dealer.countHand() -2); i++){%>
-						<li><%=dealer.getHandCard(i + 2)%></li>
+						<li><%=dealer.getHandCardStr(i + 2)%></li>
 					<%}%>
 				</ul>
 			<% } %>

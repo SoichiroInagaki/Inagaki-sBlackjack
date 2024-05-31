@@ -57,9 +57,9 @@ public abstract class Gambler {
 		return point;
 	}
 	
-	//手札のカードを取得するメソッド
-	public String getHandCard(int i) {
-		String strCard = hand.get(i).getCard();
+	//手札のカードの文字列情報を取得するメソッド
+	public String getHandCardStr(int i) {
+		String strCard = hand.get(i).getCardStr();
 		return strCard;
 	}
 	

@@ -42,4 +42,12 @@ public class Result {
 		map.put("chipMessage", "賭けていたチップ" + chip + "枚が没収されました");
 		setResult(request, chip, map);
 	}
+	
+	//スプリット時、両方の手札がバーストした際の定型文をセットするメソッド
+	public static void splitWBust(HttpServletRequest request, int chip) {
+		Map<String, String> map = new HashMap<>();
+		map.put("resultMessage", "You lose......");
+		map.put("chipMessage", "賭けていたチップ合計" + (chip * 2) + "枚が没収されました");
+		setResult(request, chip, map);
+	}
 }

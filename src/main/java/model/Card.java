@@ -26,7 +26,7 @@ public class Card {
 		this.number = number;
 	}
 	
-	public String getCard() {
+	public String getCardStr() {
 		switch(getNumber()) {
 			case 1:
 				return (getMark() + "のA");
