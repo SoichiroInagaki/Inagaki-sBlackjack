@@ -16,6 +16,12 @@ public class Result {
 		
 	}
 	
+	//スプリットした二つ目の手札について、実際に処理を行うメソッド
+	private static void setResultOfB(HttpServletRequest request, int chip, Map<String, String> map){
+		request.setAttribute("resultMessageOfB", map.get("resultMessageOfB"));
+		request.setAttribute("chipMessageOfB", map.get("chipMessageOfB"));
+	}
+	
 	//勝った時の定型文をセットするメソッド
 	public static void win(HttpServletRequest request, int chip) {
 		
@@ -43,11 +49,30 @@ public class Result {
 		setResult(request, chip, map);
 	}
 	
-	//スプリット時、両方の手札がバーストした際の定型文をセットするメソッド
-	public static void splitWBust(HttpServletRequest request, int chip) {
-		Map<String, String> map = new HashMap<>();
-		map.put("resultMessage", "You lose......");
-		map.put("chipMessage", "賭けていたチップ合計" + (chip * 2) + "枚が没収されました");
-		setResult(request, chip, map);
-	}
+	//スプリットした二つ目の手札について、勝った時の定型文をセットするメソッド
+		public static void winOfB(HttpServletRequest request, int chip) {
+			
+			Map<String, String> map = new HashMap<>();
+			map.put("resultMessageOfB", "You Win!!");
+			map.put("chipMessageOfB", "配当として、" + chip + "枚のチップを獲得しました！");
+			setResultOfB(request, chip, map);
+		}
+		
+		//スプリットした二つ目の手札について、引き分けの時の定型文をセットするメソッド
+		public static void drawOfB(HttpServletRequest request, int chip) {
+			
+			Map<String, String> map = new HashMap<>();
+			map.put("resultMessageOfB", "Draw game!");
+			map.put("chipMessageOfB", "引き分けなので、賭けていた" + chip + "枚のチップが手元に戻りました");
+			setResultOfB(request, chip, map);
+		}
+		
+		//スプリットした二つ目の手札について、負けた時の定型文をセットするメソッド
+		public static void loseOfB(HttpServletRequest request, int chip) {
+			
+			Map<String, String> map = new HashMap<>();
+			map.put("resultMessageOfB", "You lose......");
+			map.put("chipMessageOfB", "賭けていたチップ" + chip + "枚が没収されました");
+			setResultOfB(request, chip, map);
+		}
 }

@@ -12,14 +12,14 @@
 		PlayerInGame playerInGame = 
 			(PlayerInGame) session.getAttribute("playerInGame");
 		String hit = (String) request.getAttribute("hit");
-		String splitBHit = (Stinrg) request.getAttribute("splitBHit");
+		String splitBHit = (String) request.getAttribute("splitBHit");
 		Boolean splitting = (Boolean) session.getAttribute("splitting");
 		Boolean canSplit = (Boolean)request.getAttribute("canSplit");
 		Boolean pairOfA = (Boolean)session.getAttribute("pairOfA");
 		PlayerInGame splitA = (PlayerInGame) session.getAttribute("splitA");
 		PlayerInGame splitB = (PlayerInGame) session.getAttribute("splitB");
 		Integer totalChips = (Integer) request.getAttribute("totalChips");
-		Integer bettingChips = (Integer) request.getAttribute("bettingChip");
+		Integer bettingChips = (Integer) session.getAttribute("bettingChip");
 		String actionAisEnd = (String) session.getAttribute("actionAisEnd");
 		String actionBisEnd = (String) session.getAttribute("actionBisEnd");
 	%>
@@ -29,23 +29,28 @@
 	<% if(hit != null){ %>
 		<p><%=hit%></p>
 	<%}%>
-	
-	<ul>あなたの<% if(splitting){ %>一組目の<% } %>手札は、
-		<% 	playerInGame = splitA
+	<ul>あなたの
+		<% if(splitting != null){ %>
+			一組目の
+		<% } %>
+			手札は、
+		<% 	if(splitting != null){
+				playerInGame = splitA;
+			} 
 			for(int i = 0; i < playerInGame.countHand(); i++ ){ %>
 				<li><%=playerInGame.getHandCardStr(i)%></li>
 			<%}%>
 	</ul>です
 	<p>現在のカードの数値の合計は<%=playerInGame.getPoint()%>です</p>
-	<% if(canSplit){ %>
+	<% if(canSplit != null){ %>
 		<p>また、初期手札のカードが同じ数字のカードのため、スプリットが可能です</p>
 		<p>現在保有中のチップ枚数：<%=totalChips%></p>
 		<p>スプリット時に再度賭けるチップ枚数：<%=bettingChips %></p>
-		<% if(pairOfA){ %>
+		<% if(pairOfA != null){ %>
 			<p>※Aのペアをスプリットした場合、追加のヒットは行えません</p>
 		<% } %>
 	<% } %>
-	<% if(splitting){ %>
+	<% if(splitting != null){ %>
 		<% if(actionAisEnd != null){ %>
 			<p><%=actionAisEnd %></p>
 		<% }else{ %>
@@ -60,6 +65,7 @@
 			<% 	playerInGame = splitB;
 				for(int i = 0; i < playerInGame.countHand(); i++ ){%>
 					<li><%=playerInGame.getHandCardStr(i)%></li>
+				<% } %>
 		</ul>です
 		<p>現在のカードの数値の合計は<%=playerInGame.getPoint()%>です</p>
 		<% if(actionBisEnd != null){ %>
@@ -69,15 +75,20 @@
 			<form action="GameServlet" method="post" id="form">
 				<label><input type="radio" name="actionB" value="hit" required>HIT</label>
 				<label><input type="radio" name="actionB" value="stand" >STAND</label>
-				<button type="submit">それぞれのアクションを確定</button>
-			</form>
 		<% } %>
+				<button type="submit">
+					<%if(actionAisEnd == null && actionBisEnd == null){%>
+						それぞれの
+					<% } %>
+					アクションを確定
+				</button>
+			</form>
 	<% }else{ %>
 		<p>行うアクションを選んでください</p>
 		<form action="GameServlet" method="post">
 			<button type="submit" name="clicked" value="hit">HIT</button>
 			<button type="submit" name="clicked" value="stand">STAND</button>
-			<% if(canSplit){ %>
+			<% if(canSplit != null){ %>
 				<button type="submit" name="clicked" value="split">SPLIT</button>
 			<% } %>
 		</form>

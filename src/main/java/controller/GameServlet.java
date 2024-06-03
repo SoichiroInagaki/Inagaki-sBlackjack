@@ -36,6 +36,10 @@ public class GameServlet extends HttpServlet {
 		session.setAttribute("actionBisEnd", null);
 		session.setAttribute("splitA", null);
 		session.setAttribute("splitB", null);
+		session.setAttribute("splitting", null);
+		session.setAttribute("result", null);
+		session.setAttribute("resultOfB", null);
+		session.setAttribute("pairOfA", null);
 		
 		//カードを準備
 		Deck deck = new Deck();
@@ -134,20 +138,21 @@ public class GameServlet extends HttpServlet {
 		boolean actionAisEnd = false;
 		boolean actionBisEnd = false;
 		Boolean pairOfA = (Boolean) session.getAttribute("pairOfA");
+		boolean splitWStand = false;
 		
 		//DB接続を行うため、try文
 		try {
 			PlayerDao playerDao = new PlayerDao();
 			
 			//スプリット時は2回、通常時は1回アクション処理の判定を行う
-			for(int i = 0; i < 2; i++) {
+			LABEL : for(int i = 0; i < 2; i++) {
 				//JSPで入力されたアクションを取得する
 				action = request.getParameter("clicked");
-				if(splitting) {
-					if(pairOfA && i == 0) {
+				if(splitting != null && splitting) {
+					if(pairOfA != null && pairOfA && i == 0) {
 						action = "stand";
 						playerInGame = splitA;
-					}else if(pairOfA && i == 0) {
+					}else if(pairOfA != null && pairOfA && i == 1) {
 						action = "stand";
 						playerInGame = splitB;
 					}else if(i == 0) {
@@ -171,27 +176,24 @@ public class GameServlet extends HttpServlet {
 					session.setAttribute("splitB", splitB);
 					splitting = true;
 					session.setAttribute("splitting", splitting);
-					if(pairOfA) {
-						nextPage = "GameServlet";
-					}
 				//アクションがヒットのとき
 				}else if(action.equals("hit")) {
 					playerInGame.hit(deck);
 					message = "ヒットしました";
 					//スプリットした二つ目の手札をヒットした時だけ、それ専用の場所にメッセージを保持
-					if(!(action.equals("actionB"))) {
-						request.setAttribute("hit", message);
-					}else {
+					if(splitting != null && splitting && i == 1){
 						request.setAttribute("splitBHit", message);
+					}else {
+						request.setAttribute("hit", message);
 					}
 					//バーストしたかを判定する
 					if(playerInGame.confirmBust()) {
 						//バーストしていた場合
 						//スプリットしている場合、その手札にこれ以上アクションを行えないようにする
 						//敗北したという属性もセッションに付与
-						if(splitting) {
+						if(splitting != null && splitting) {
 							message = "この手札はバーストしています";
-							if(action.equals("actionA")) {
+							if(i == 0) {
 								session.setAttribute("actionAisEnd", message);
 								actionAisEnd = true;
 								gameResult = "lose";
@@ -199,8 +201,8 @@ public class GameServlet extends HttpServlet {
 							}else {
 								session.setAttribute("actionBisEnd", message);
 								actionBisEnd = true;
-								gameResultOfB = "lose";
-								session.setAttribute("resultOfB", "lose");
+								gameResultOfB = "loseOfB";
+								session.setAttribute("resultOfB", "loseOfB");
 							}
 						//通常プレイ時はゲーム終了
 						}else {
@@ -213,9 +215,9 @@ public class GameServlet extends HttpServlet {
 				//アクションがスタンドのとき、または、スプリットしていて、既にバーストしていたとき
 				}else {
 					//スプリット時は、その手札にこれ以上アクションできないようにする
-					if(splitting) {
+					if(splitting != null && splitting) {
 						message = "この手札でスタンドしています";
-						if(action.equals("actionA")) {
+						if(i == 0) {
 							if(gameResult != null) {
 								message = "この手札はバーストしています";
 							}
@@ -225,14 +227,14 @@ public class GameServlet extends HttpServlet {
 							if(gameResultOfB != null) {
 								message = "この手札はバーストしています";
 							}
-							session.setAttribute("actionAisEnd", message);
-							actionAisEnd = true;
+							session.setAttribute("actionBisEnd", message);
+							actionBisEnd = true;
 						}
 					}
 					//通常プレイ時、またはスプリットした手札が両方アクション不可の時はゲーム終了
-					if(action.equals("clicked") || (actionAisEnd && actionBisEnd)) {
+					if(splitting == null || (actionAisEnd && actionBisEnd)) {
 						//スプリットしていて、両方の手札がバーストしていた場合
-						if(gameResult.equals("lose") && gameResultOfB.equals("lose")) {
+						if(gameResult != null && gameResult.equals("lose") && gameResultOfB != null && gameResultOfB.equals("loseOfB")) {
 							message = "両方の手札がバーストしてしまいました。あなたの負けです";
 							request.setAttribute("bustedPlayer", message);
 							gameResult = "splitWBust";
@@ -242,75 +244,121 @@ public class GameServlet extends HttpServlet {
 							if(dealer.confirmBust()) {
 								message = "21点を超えたので、ディーラーはバーストしました！";
 								request.setAttribute("bustedDealer", message);
+								//スプリットした両方の手札をスタンドしていた場合
+								if(splitting != null && splitting && gameResult == null && gameResultOfB == null) {
+									gameResult = "splitWStand";
+									gameResultOfB = "splitWStand";
+									splitWStand = true;
+									request.setAttribute("splitWStand", splitWStand);
 								//スプリットした二つ目の手札をスタンドしていた場合
-								if(action.equals("actionB") && (!gameResultOfB.equals("lose"))) {
-									gameResultOfB = "win";
+								} else if(splitting != null && splitting && i == 1 && gameResultOfB == null) {
+									gameResultOfB = "winOfB";
+									message = "スタンドしていたため、あなたの勝利です！";
+									request.setAttribute("situationMessageOfB", message);
 								//スプリットした一つ目の手札、もしくは、通常プレイでスタンドしていた場合
-								}else if((action.equals("actionA") && (!gameResult.equals("lose"))) 
-										|| action.equals("clicked")){
+								}else if(splitting != null && splitting && i == 0 && gameResult == null	){
 									gameResult = "win";
+									message = "スタンドしていたため、あなたの勝利です！";
+									request.setAttribute("situationMessage", message);
+								}else if(splitting != null&& splitting && i == 0) {
+									message = "21点を超えてバーストしているため、あなたの負けです";
+									request.setAttribute("situationMessage", message);
+								}else if(splitting != null && splitting && i == 1){
+									message = "21点を超えてバーストしているため、あなたの負けです";
+									request.setAttribute("situationMessageOfB", message);
+								}else {
+									gameResult = "win";
+									gameEnd = true;
 								}
-								//上記if文に該当しないパターンは、スプリット時、その手札がバーストしていたパターン
 							}else {
 								if(dealer.getPoint() < playerInGame.getPoint()) {
 									message = "あなたの方が21点に近いため、あなたの勝利です！";
-									if(action.equals("actionB")) {
+									if(splitting != null && splitting && i == 1) {
 										request.setAttribute("situationMessageOfB", message);
-										gameResultOfB = "win";
+										gameResultOfB = "winOfB";
 									}else {
 										request.setAttribute("situationMessage", message);
 										gameResult = "win";
+										gameEnd = true;
 									}
 								}else if(dealer.getPoint() == playerInGame.getPoint()) {
 									message = "合計点数が同じなので、このゲームは引き分けです";
-									if(action.equals("actionB")) {
+									if(splitting != null && splitting && i == 1) {
 										request.setAttribute("situationMessageOfB", message);
-										gameResultOfB = "draw";
+										gameResultOfB = "drawOfB";
 									}else {
 										request.setAttribute("situationMessage", message);
 										gameResult = "draw";
+										gameEnd = true;
 									}
 								}else {
 									message = "ディーラーの方が21点に近いため、ディーラーの勝利です";
-									if(action.equals("actionB")) {
+									if(splitting != null && splitting && i == 1) {
 										request.setAttribute("situationMessageOfB", message);
-										gameResultOfB = "lose";
+										gameResultOfB = "loseOfB";
 									}else {
 										request.setAttribute("situationMessage", message);
 										gameResult = "lose";
+										gameEnd = true;
 									}
 								}
 							}
 						}
 					}
 				}
-			}
-			if(gameEnd || (actionAisEnd && actionBisEnd)) {
-				switch(gameResult) {
-				case "win":
-					Result.win(request, (chip * 2));
-					playerDao.cashBack(player.getId(), (chip * 2));
-					playerDao.updateRecord(player, "win");
+				if((splitting == null && gameEnd) || (actionAisEnd && actionBisEnd)) {
+					String result;
+					if(splitting != null && splitting && i == 1) {
+						result = gameResultOfB;
+					}else {
+						result = gameResult;
+					}
+					switch(result) {
+					case "win":
+						Result.win(request, (chip * 2));
+						playerDao.cashBack(player.getId(), (chip * 2));
+						playerDao.updateRecord(player, "win");
+						break;
+					case "draw":
+						Result.draw(request, chip);
+						playerDao.cashBack(player.getId(), chip);
+						playerDao.updateRecord(player, "draw");
+						break;
+					case "lose":
+						Result.lose(request, chip);
+						playerDao.updateRecord(player, "lose");
+						break;
+					case "winOfB":
+						Result.winOfB(request, (chip * 2));
+						playerDao.cashBack(player.getId(), (chip * 2));
+						playerDao.updateRecord(player, "win");
+						break;
+					case "drawOfB":
+						Result.drawOfB(request, chip);
+						playerDao.cashBack(player.getId(), chip);
+						playerDao.updateRecord(player, "draw");
+						break;
+					case "loseOfB":
+						Result.loseOfB(request, chip);
+						playerDao.updateRecord(player, "lose");
+						break;
+					case "splitWBust":
+						Result.lose(request, (chip * 2));
+						playerDao.updateRecord(player, "lose");
+						break;
+					case "splitWStand":
+						Result.win(request, (chip * 4));
+						playerDao.cashBack(player.getId(), (chip * 4));
+						playerDao.updateRecord(player, "win");
+						nextPage = "result.jsp";
+						break LABEL;
+					}
 					nextPage = "result.jsp";
-				case "draw":
-					Result.draw(request, chip);
-					playerDao.cashBack(player.getId(), chip);
-					playerDao.updateRecord(player, "draw");
-					nextPage = "result.jsp";
-				case "lose":
-					Result.lose(request, chip);
-					playerDao.updateRecord(player, "lose");
-					nextPage = "result.jsp";
-				case "splitWBust":
-					Result.splitWBust(request, chip);
-					playerDao.updateRecord(player, "lose");
-					playerDao.updateRecord(player, "lose");
-					nextPage = "result.jsp";
+				}else if(splitting != null && splitting && pairOfA != null && pairOfA) {
+					nextPage = "GameServlet";
+				}else {
+					nextPage = "in-game.jsp";
 				}
-			}else if(pairOfA) {
-				
-			}else {
-				nextPage = "in-game.jsp";
 			}
 		}catch(BlackjackException e) {
 			

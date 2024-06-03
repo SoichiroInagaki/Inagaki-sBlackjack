@@ -14,30 +14,50 @@
 		String hit = (String) request.getAttribute("Hit");
 		String bustedPlayer = (String) request.getAttribute("bustedPlayer");
 		String resultMessage = (String) request.getAttribute("resultMessage");
+		String resultMessageOfB = (String) request.getAttribute("resultMessageOfB");
 		String chipMessage = (String) request.getAttribute("chipMessage");
+		String chipMessageOfB = (String) request.getAttribute("chipMessageOfB");
 		Integer countedHit = (Integer) request.getAttribute("countHit");
 		String blackjackMessageForPlayer = (String) request.getAttribute("blackjackMessageForPlayer");
 		String blackjackMessageForDealer = (String) request.getAttribute("blackjackMessageForDealer");
 		String bustedDealer = (String) request.getAttribute("bustedDealer");
 		String situationMessage = (String) request.getAttribute("situationMessage");
+		String situationMessageOfB = (String) request.getAttribute("situationMessageOfB");
 		String actionAisEnd = (String) session.getAttribute("actionAisEnd");
 		String actionBisEnd = (String) session.getAttribute("actionBisEnd");
 		PlayerInGame splitA = (PlayerInGame) session.getAttribute("splitA");
 		PlayerInGame splitB = (PlayerInGame) session.getAttribute("splitB");
+		Boolean splitting = (Boolean) session.getAttribute("splitting");
+		Boolean splitWStand = (Boolean) request.getAttribute("splitWStand");
 	%>
 	
 	<% if(hit != null){ %>
 		<p><%=hit%></p>
 	<% } %>
-	<% if() %>
-	<ul>あなたの手札は、
-		<% for(int i = 0; i < playerInGame.countHand(); i++ ){ %>
-		<li><%=playerInGame.getHandCardStr(i)%></li>
-		<%}%>
+	<ul>あなたの
+		<% if(splitting != null){ %>
+			一組目の
+		<% } %>
+		手札は、
+		<% 	if(splitting != null){
+				playerInGame = splitA;
+			}
+			for(int i = 0; i < playerInGame.countHand(); i++ ){ %>
+				<li><%=playerInGame.getHandCardStr(i)%></li>
+			<%}%>
 	</ul>です
 	<p>カードの数値の合計は<%=playerInGame.getPoint()%>です</p>
-	<%=actionAisEnd %>
-	
+	<% if(splitting != null){ %>
+		<%=actionAisEnd%>
+		<ul>あなたの二組目の手札は、
+			<% 	playerInGame = splitB;
+				for(int i = 0; i < playerInGame.countHand(); i++ ){%>
+					<li><%=playerInGame.getHandCardStr(i)%></li>
+				<% } %>
+		</ul>です
+		<p>カードの数値の合計は<%=playerInGame.getPoint()%>です</p>
+		<%=actionBisEnd%>
+	<% } %>
 	<% if(bustedPlayer != null){ %>
 		<p><%=bustedPlayer %></p>
 		<p><%=resultMessage %></p>
@@ -67,11 +87,26 @@
 				</ul>
 			<% } %>
 			<p>ディーラーの数値の合計は<%=dealer.getPoint()%>です</p>
-			<%if(!(bustedDealer == null)){%>
+			<%if((bustedDealer != null && splitWStand != null) || (bustedDealer != null && splitting == null)){%>
 				<p><%=bustedDealer%></p>
 				<p><%=resultMessage %></p>
 				<p><%=chipMessage %></p>
-			<%}else{%>
+			<%}else if (!(bustedDealer == null) && (splitting != null)){%>
+				<p><%=bustedDealer %></p>
+				<p>一組目の手札について、<%=situationMessage %></p>
+				<p><%=resultMessage %></p>
+				<p><%=chipMessage %></p>
+				<p>二組目の手札について、<%=situationMessageOfB %></p>
+				<p><%=resultMessageOfB %></p>
+				<p><%=chipMessageOfB %></p>
+			<%}else if(splitting != null){ %>
+				<p><p>一組目の手札について、<%=situationMessage %></p>
+				<p><%=resultMessage %></p>
+				<p><%=chipMessage %></p>
+				<p>二組目の手札について、<%=situationMessageOfB %></p>
+				<p><%=resultMessageOfB %></p>
+				<p><%=chipMessageOfB %></p>
+			<%}else{ %>
 				<p><%=situationMessage %></p>
 				<p><%=resultMessage %></p>
 				<p><%=chipMessage %></p>
