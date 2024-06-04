@@ -72,17 +72,17 @@
 			<p><%=actionBisEnd %></p>
 		<% }else{ %>
 			<p>行うアクションを選んでください</p>
-			<form action="GameServlet" method="post" id="form">
-				<label><input type="radio" name="actionB" value="hit" required>HIT</label>
-				<label><input type="radio" name="actionB" value="stand" >STAND</label>
+			<label><input type="radio" name="actionB" value="hit" form="form" required>HIT</label>
+			<label><input type="radio" name="actionB" value="stand" form="form">STAND</label>
 		<% } %>
-				<button type="submit">
-					<%if(actionAisEnd == null && actionBisEnd == null){%>
-						それぞれの
-					<% } %>
-					アクションを確定
-				</button>
-			</form>
+		<form action="GameServlet" method="post" id="form">
+			<button type="submit">
+				<%if(actionAisEnd == null && actionBisEnd == null){%>
+					それぞれの
+				<% } %>
+				アクションを確定
+			</button>
+		</form>
 	<% }else{ %>
 		<p>行うアクションを選んでください</p>
 		<form action="GameServlet" method="post">
