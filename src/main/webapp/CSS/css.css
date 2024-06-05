@@ -1,0 +1,69 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap');
+body{
+	font-family: "Dela Gothic One", sans-serif;
+	font-size: 18px;
+	text-align: center;
+	background-color: greenyellow;
+	line-height: 0.8;
+}
+
+.circle{
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background-color: orange;
+	line-height: 20px;
+	border: solid 2px orangered;
+}
+
+.title{
+	font-weight: bold;
+	font-size: 2.5em;
+	line-height: 0.5em;
+	text-shadow: 2px 2px 1px yellow;
+}
+
+.summary{	
+	font-size: 1.5em;
+	text-decoration: underline;
+}
+
+.alert{
+	color: red;
+	text-decoration: underline;
+}
+
+.menu_button{
+	width: 300px;
+	height: 60px;
+	margin: 0.5em;
+}
+
+.delete_choice_button{
+	width: 150px;
+	height: 60px;
+}
+
+button{
+	padding: 0em, 1em;
+	font-size: 1.1em;
+	margin: 1em;
+	background-color: yellow;
+	border: 8px double;
+	font-family: inherit;
+	transition: .3s;
+	box-shadow: 0 2px 4px black;
+}
+
+button:hover{
+	opacity: 0.7;
+	font-size: 1.2em;
+	box-shadow: 0 1px 2px  black;
+}
+
+input{
+	font-family: inherit;
+	background-color: lightgoldenrodyellow;
+}

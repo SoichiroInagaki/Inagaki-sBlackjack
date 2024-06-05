@@ -5,27 +5,30 @@
 <head>
 <meta charset="UTF-8">
 <title>Blackjack</title>
+<link rel="stylesheet" href="CSS/css.css">
 </head>
 <body>
-	<h1>-Blackjack-</h1>
-	<h3>ここは戦績表示画面</h3>
+	<p class="title">-Blackjack-</p>
+	<p class="summary">戦績</p>
 	<p>あなたの戦績は以下の通りです</p>
-	<% 
-		Integer chipOfLoginedPlayer = (Integer) request.getAttribute("chipOfLoginedPlayer"); 
-		Player player = (Player) session.getAttribute("player");
-	%>
-	
+	<% 	Integer chipOfLoginedPlayer = (Integer) request.getAttribute("chipOfLoginedPlayer"); 
+		Player player = (Player) session.getAttribute("player");%>
 	<!-- チップ制の導入 -->
-	<p><%=player.getName()%> 保有チップ枚数：<%=chipOfLoginedPlayer%></p>
-	<p>保有チップ枚数TOP5のプレイヤーは、以下の通りです</p>
-	<%
-		Player[] rankedPlayers = (Player[]) request.getAttribute("rankedRecords");
-		for(int i = 0; i < 5; i++){
-	%>
-		<p>【<%=(i + 1)%>】<%=rankedPlayers[i].getName()%>
-		 保有チップ枚数：<%=rankedPlayers[i].getCoin() %>
-	<% } %>
-	
-	<p><a href="menu.jsp">メインメニュー画面に戻る</a></p>
+	<p style="text-decoration: underline"><%=player.getName()%>...保有チップ枚数：<%=chipOfLoginedPlayer%></p>
+	<p style="margin-top: 2em">保有チップ枚数TOP5のプレイヤーは、以下の通りです</p>
+	<table style="margin: auto">
+		<tr>
+			<td>順位</td><td>プレイヤーネーム</td><td>保有チップ枚数</td>
+		</tr>
+		<%	Player[] rankedPlayers = (Player[]) request.getAttribute("rankedRecords");
+			for(int i = 0; i < 5; i++){%>
+				<tr>
+					<td><span class="circle"><%=(i + 1)%></span></td>
+					<td><%=rankedPlayers[i].getName()%></td>
+					<td><%=rankedPlayers[i].getCoin() %></td>
+				</tr>
+		<%	 } %>
+	</table>
+	<p style="margin: 2em"><a href="menu.jsp">メインメニュー画面に戻る</a></p>
 </body>
 </html>

@@ -5,33 +5,27 @@
 <head>
 <meta charset="UTF-8">
 <title>Blackjack</title>
+<link rel="stylesheet" href="CSS/css.css">
 </head>
 <body>
-	<h1>-Blackjack-</h1>
-	<% 
-		Player player = (Player) session.getAttribute("player");
-		if(player != null){
-	%>
-	<p>ログインプレイヤー：<%=player.getName()%>
-	<%}%>
-	
-	<%
+	<p class="title">-Blackjack-</p>
+	<% 	Player player = (Player) session.getAttribute("player");
+		if(player != null){%>
+			<p>ログインプレイヤー：<%=player.getName()%></p>
+	<%	}
 		String message = (String) request.getAttribute("message");
-		if(message != null){
-	%>
-	<p><%=message%></p>
-	<%}%>
-	
-	<h3>ここはメインメニュー</h3>
+		if(message != null){%>
+			<p class="alert"><%=message%></p>
+	<%	}%>
+	<p class="summary">メインメニュー</>
 	<form action="MenuServlet" method="get">
-		<button type="submit" name="clicked" value="play">ブラックジャックをプレイ</button>
+		<button type="submit" name="clicked" value="play" class="menu_button">ブラックジャックをプレイ</button>
 		<br>
-		<button type="submit" name="clicked" value="record">戦績確認</button>
+		<button type="submit" name="clicked" value="record" class="menu_button">戦績確認</button>
 		<br>
-		<button type="submit" name="clicked" value="delete">退会</button>
+		<button type="submit" name="clicked" value="delete" class="menu_button">退会</button>
 		<br>
-		<button type="submit" name="clicked" value="logout">ログアウト</button>
+		<button type="submit" name="clicked" value="logout" class="menu_button">ログアウト</button>
 	</form>
-
 </body>
 </html>
