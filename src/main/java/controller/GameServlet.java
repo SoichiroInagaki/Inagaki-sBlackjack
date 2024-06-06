@@ -225,12 +225,16 @@ public class GameServlet extends HttpServlet {
 						message = "この手札でスタンドしています";
 						if(i == 0) {
 							if(gameResult != null) {
+								message = "21点を超えてバーストしているため、あなたの負けです";
+								request.setAttribute("situationMessage", message);
 								message = "この手札はバーストしています";
 							}
 							session.setAttribute("actionAisEnd", message);
 							actionAisEnd = true;
 						}else {
 							if(gameResultOfB != null) {
+								message = "21点を超えてバーストしているため、あなたの負けです";
+								request.setAttribute("situationMessageOfB", message);
 								message = "この手札はバーストしています";
 							}
 							session.setAttribute("actionBisEnd", message);

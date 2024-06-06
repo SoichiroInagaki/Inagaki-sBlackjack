@@ -27,6 +27,6 @@
 		<br>
 		<button type="submit">プレイヤーを削除する</button>
 	</form>
-	<p style="margin: 2em"><a href="menu.jsp">メインメニュー画面に戻る</a></p>
+	<p class="bottom_link"><a href="menu.jsp">メインメニュー画面に戻る</a></p>
 </body>
 </html>

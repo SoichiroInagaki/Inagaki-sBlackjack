@@ -26,6 +26,6 @@
 		<br>
 		<button type="submit">ログイン</button>
 	</form>
-	<p>新規の方は<a href="new_player.jsp">こちら</a></p>
+	<p class="bottom_link">新規の方は<a href="new_player.jsp">こちら</a></p>
 </body>
 </html>

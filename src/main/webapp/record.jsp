@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Blackjack</title>
+<link rel="stylesheet" href="CSS/css.css">
 </head>
 <body>
 
@@ -26,8 +27,6 @@
 			試合数：<%=rankedPlayers[i].getGames()%></p>
 		<%}%>
 	
-	<p><a href="menu.jsp">メインメニュー画面に戻る</a></p>
-
-
+	<p class="bottom_link"><a href="menu.jsp">メインメニュー画面に戻る</a></p>
 </body>
 </html>

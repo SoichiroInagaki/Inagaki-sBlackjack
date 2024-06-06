@@ -5,25 +5,20 @@
 <head>
 <meta charset="UTF-8">
 <title>Blackjack</title>
+<link rel="stylesheet" href="CSS/css.css">
 </head>
 <body>
-	<h1>-Blackjack-</h1>
-	<h3>ここはゲーム画面</h3>
-	
-	<%
-		String message = (String) request.getAttribute("message");
-		if(message != null){
-	%>
-	<p><%=message%></p>
-	<%}%>
-	
-	<% Integer chip = (Integer) request.getAttribute("chip");%>
+	<p class="title">-Blackjack-</p>
+	<%	String message = (String) request.getAttribute("message");
+		if(message != null){%>
+			<p class="alert"><%=message%></p>
+	<%	}
+		Integer chip = (Integer) request.getAttribute("chip");%>
 	<p>現在保有中のチップ枚数：<%=chip%></p>
-	
 	<form action="GameServlet" method="get">
-		<p>ベット額</p>
+		<p style="margin-top: 2em">ベット額</p>
 		<select name="bet" required>
-			<option value="">選択してください</option>
+			<option value="">SELECT</option>
 			<option value="1">1</option>
 			<option value="2">2</option>
 			<option value="3">3</option>
@@ -38,7 +33,7 @@
 		<br>
 		<button type="submit">賭け金を設定してゲームを開始する</button>
 	</form>
-	<p><a href="menu.jsp">メインメニュー画面に戻る</a></p>
+	<p class="bottom_link"><a href="menu.jsp">メインメニュー画面に戻る</a></p>
 
 
 </body>

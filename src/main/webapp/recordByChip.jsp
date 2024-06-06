@@ -14,7 +14,7 @@
 	<% 	Integer chipOfLoginedPlayer = (Integer) request.getAttribute("chipOfLoginedPlayer"); 
 		Player player = (Player) session.getAttribute("player");%>
 	<!-- チップ制の導入 -->
-	<p style="text-decoration: underline"><%=player.getName()%>...保有チップ枚数：<%=chipOfLoginedPlayer%></p>
+	<p style="text-decoration: underline;"><%=player.getName()%>...保有チップ枚数：<%=chipOfLoginedPlayer%></p>
 	<p style="margin-top: 2em">保有チップ枚数TOP5のプレイヤーは、以下の通りです</p>
 	<table style="margin: auto">
 		<tr>
