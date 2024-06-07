@@ -15,7 +15,7 @@
 	<%	}%>
 	<p class="summary">退会</p>
 	<p>現在ログイン中のプレイヤーのデータを削除します
-	<p style="color: red">※削除したプレイヤーのデータは後から復元することができません</p>
+	<p class="red_text">※削除したプレイヤーのデータは後から復元することができません</p>
 	<p>データの削除を行うためには、ログイン中のプレイヤーのパスワードを入力してください</p>
 	<%	String message = (String) request.getAttribute("message");
 		if(message != null){%>

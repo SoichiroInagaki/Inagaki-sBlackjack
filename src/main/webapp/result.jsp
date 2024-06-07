@@ -48,9 +48,9 @@
 							・
 				<%	}
 				}%>
-			で、カードの数値の合計は<span style="color: red"><%=playerInGame.getPoint()%></span>です</p>
+			で、カードの数値の合計は<span class="red_text"><%=playerInGame.getPoint()%></span>です</p>
 		<% 	if(splitting != null){ %>
-			<p style="color: red"><%=actionAisEnd%></p>
+			<p class="red_text"><%=actionAisEnd%></p>
 			<p>あなたの二組目の手札は、
 				<% 	playerInGame = splitB;
 					for(int i = 0; i < playerInGame.countHand(); i++ ){ %>
@@ -59,8 +59,8 @@
 							・
 					<%	} 
 					}%>
-				で、現在のカードの数値の合計は<span style="color: red"><%=playerInGame.getPoint()%></span>です</p>
-			<p style="color: red"><%=actionBisEnd%></p>
+				で、現在のカードの数値の合計は<span class="red_text"><%=playerInGame.getPoint()%></span>です</p>
+			<p class="red_text"><%=actionBisEnd%></p>
 		<% } %>
 		<% if(bustedPlayer != null){ %>
 			<p><%=bustedPlayer %></p>
@@ -68,7 +68,7 @@
 			<p><%=chipMessage %></p>
 		<% }else{ %>
 			<% if(blackjackMessageForPlayer != null){ %>
-				<p style="color: red"><%=blackjackMessageForPlayer %></p>
+				<p class="red_text"><%=blackjackMessageForPlayer %></p>
 			<% } %>
 			<p>ディーラーの初期手札は、<%=dealer.getHandCardStr(0)%>・
 				<%=dealer.getHandCardStr(1)%>でした</p>
@@ -79,7 +79,7 @@
 			<% }else{ %>
 				<%if(countedHit.equals(0)){%>
 					<p>初めから点数が17点以上だったため、ディーラーはカードの追加を行いませんでした</p>
-					<p>ディーラーの数値の合計は<span style="color: red"><%=dealer.getPoint()%></span>です</p>
+					<p>ディーラーの数値の合計は<span class="red_text"><%=dealer.getPoint()%></span>です</p>
 				<%}else{%>
 					<p>ディーラーは点数が17点以上になるよう、追加でカードを<%=countedHit%>枚引きました</p>
 					<p>追加されたカードは、
@@ -90,7 +90,7 @@
 							<%	} 
 							}%>
 						で、ディーラーの数値の合計は
-						<span style="color: red"><%=dealer.getPoint()%></span>となりました</p>
+						<span class="red_text"><%=dealer.getPoint()%></span>となりました</p>
 				<% } %>
 				<%if((bustedDealer != null && splitWStand != null) || (bustedDealer != null && splitting == null)){%>
 					<p><%=bustedDealer%></p>

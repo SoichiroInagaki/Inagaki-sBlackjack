@@ -51,16 +51,16 @@ input[type="radio"]{
 
 input[type="radio"]:checked + label{
 	background-color: blue;
-	border: double 6px skyblue;
+	border: solid 3px skyblue;
 	box-shadow: 0 1px 2px skyblue;
 }
 
 .split_action_label{
 	display: inline-block;
 	text-align: center;
-	border: double 6px blue;
+	border: solid 3px blue;
 	margin: 1em;
-	padding: 0.2em 0.5em;
+	padding: 0.4em 0.5em;
 	color: white;
 	background-color: skyblue;
 	transition: 0.3s;
@@ -102,6 +102,7 @@ input[type="radio"]:checked + label{
 .alert{
 	color: red;
 	text-decoration: underline;
+	text-shadow: 1px 1px black;
 }
 
 .menu_button{
@@ -152,6 +153,7 @@ input[type="radio"]:checked + label{
 	left: 0;
 	width: 462px;
 	height: 200px;
+	overflow: auto;
 }
 
 .game_split_area_B{
@@ -161,6 +163,7 @@ input[type="radio"]:checked + label{
 	width: 462px;
 	height: 200px;
 	border-left: dashed green 2px;
+	overflow: auto;
 }
 
 .game_action_area{
@@ -175,15 +178,15 @@ input[type="radio"]:checked + label{
 	position:absolute;
 	top: 0px;
 	left: 0;
-	width: 380px;
+	width: 325px;
 	height: 100px;
 }
 
 .game_actionB_area{
 	position:absolute;
 	top: 0px;
-	left: 380px;
-	width: 380px;
+	left: 325px;
+	width: 325px;
 	height: 100px;
 	border-left: dashed green 2px;
 }
@@ -191,10 +194,20 @@ input[type="radio"]:checked + label{
 .game_action_split_decision_area{
 	position:absolute;
 	top: 0px;
-	left: 760px;
-	width: 165px;
+	left: 650px;
+	width: 275px;
 	height: 100px;
 	border-left: dashed green 2px;
+}
+
+.game_action_end_text{
+	background-color: red;
+	padding: 2px;
+}
+
+.red_text{
+	color: red;
+	text-shadow: 1px 1px black;
 }
 
 .game_gambler_name{

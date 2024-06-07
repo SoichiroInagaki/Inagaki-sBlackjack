@@ -148,7 +148,7 @@ public class GameServlet extends HttpServlet {
 			for(int i = 0; i < 2; i++) {
 				//JSPで入力されたアクションを取得する
 				action = request.getParameter("clicked");
-				if(splitting != null && splitting) {
+				if(splitting != null) {
 					if(pairOfA != null &&  i == 0) {
 						action = "stand";
 						playerInGame = splitA;
@@ -195,11 +195,15 @@ public class GameServlet extends HttpServlet {
 							message = "この手札はバーストしています";
 							if(i == 0) {
 								session.setAttribute("actionAisEnd", message);
+								message = "21点を超えてバーストしているため、あなたの負けです";
+								request.setAttribute("situationMessage", message);
 								actionAisEnd = true;
 								gameResult = "lose";
 								session.setAttribute("result", "lose");
 							}else {
 								session.setAttribute("actionBisEnd", message);
+								message = "21点を超えてバーストしているため、あなたの負けです";
+								request.setAttribute("situationMessageOfB", message);
 								actionBisEnd = true;
 								gameResultOfB = "loseOfB";
 								session.setAttribute("resultOfB", "loseOfB");

@@ -42,9 +42,9 @@
 						・
 					<%	}
 				}%>
-			で、現在のカードの数値の合計は<span style="color: red"><%=playerInGame.getPoint()%></span>です</p>
+			で、現在のカードの数値の合計は<span class="red_text"><%=playerInGame.getPoint()%></span>です</p>
 		<% if(canSplit != null){ %>
-			<p style="color: red">また、初期手札のカードが同じ数字のカードのため、スプリットが可能です</p>
+			<p class="red_text">また、初期手札のカードが同じ数字のカードのため、スプリットが可能です</p>
 			<p>現在保有中のチップ枚数：<%=totalChips%></p>
 			<p>スプリット時に再度賭けるチップ枚数：<%=bettingChips %></p>
 			<% if(pairOfA != null){ %>
@@ -53,7 +53,7 @@
 		<% } %>
 		<% 	if(splitting != null){ %>
 				<% 	if(actionAisEnd != null){ %>
-						<p style="color: red"><%=actionAisEnd %></p>
+						<p class="red_text"><%=actionAisEnd %></p>
 				<% 	}else{ %>
 						<p>行うアクションを左下のボタンから選んでください</p>
 				<% 	}
@@ -68,9 +68,9 @@
 								・
 							<%	} 
 						}%>
-					で、現在のカードの数値の合計は<span style="color: red"><%=playerInGame.getPoint()%></span>です</p>
+					で、現在のカードの数値の合計は<span class="red_text"><%=playerInGame.getPoint()%></span>です</p>
 				<% if(actionBisEnd != null){ %>
-					<p style="color: red"><%=actionBisEnd %></p>
+					<p class="red_text"><%=actionBisEnd %></p>
 				<% }else{ %>
 					<p>行うアクションを左下のボタンから選んでください</p>
 				<% } %>
@@ -114,7 +114,9 @@
 	<div class="game_action_area">
 		<p class="game_gambler_name">&lt; ACTION &gt;</p>
 		<%	if(splitting == null){ %>
-				<div style="margin-top: 1em"><br></div>
+				<div style="margin-top: 1em">
+					<br>
+				</div>
 				<form action="GameServlet" method="post">
 					<button type="submit" name="clicked" value="hit">HIT</button>
 					<button type="submit" name="clicked" value="stand">STAND</button>
@@ -123,30 +125,54 @@
 					<% 	} %>
 				</form>
 		<%	}else{ %>
-				<div class="game_actionA_area">
-					<div style="margin-top: 1em"><br></div>
-						<input type="radio" name="actionA" value="hit" form="form" id="hitA" required>
-							<label class="split_action_label" for="hitA">HIT</label>
-						<input type="radio" name="actionA" value="stand" form="form" id="standA">
-							<label class="split_action_label" for="standA">STAND</label>
-				</div>
-				<div class="game_actionB_area">
-					<div style="margin-top: 1em"><br></div>
-						<input type="radio" name="actionB" value="hit" form="form" id="hitB" required>
-							<label class="split_action_label" for="hitB">HIT</label>
-						<input type="radio" name="actionB" value="stand" form="form" id="standB">
-							<label class="split_action_label" for="standB">STAND</label>
-				</div>
-				<div class="game_action_split_decision_area">
-					<form action="GameServlet" method="post" id="form">
+				<form action="GameServlet" method="post" id="form">
+					<div class="game_actionA_area">
+						<div style="margin-top: 1em">
+							<br>
+						</div>
+						<% 	if(actionAisEnd != null){ %>
+								<p><span class="game_action_end_text">
+									CAN'T TAKE ACTION!
+								</span></p>
+						<%	}else{ %>
+								<input type="radio" name="actionA" value="hit" form="form" id="hitA" required>
+									<label class="split_action_label" for="hitA">
+										HIT
+									</label>
+								<input type="radio" name="actionA" value="stand" form="form" id="standA">
+									<label class="split_action_label" for="standA">
+										STAND
+									</label>
+						<%	} %>
+					</div>
+					<div class="game_actionB_area">
+						<div style="margin-top: 1em">
+							<br>
+						</div>
+						<% 	if(actionBisEnd != null){ %>
+								<p><span class="game_action_end_text">
+									CAN'T TAKE ACTION!
+								</span></p>
+						<%	}else{ %>
+								<input type="radio" name="actionB" value="hit" form="form" id="hitB" required>
+									<label class="split_action_label" for="hitB">
+										HIT
+									</label>
+								<input type="radio" name="actionB" value="stand" form="form" id="standB">
+									<label class="split_action_label" for="standB">
+										STAND
+									</label>
+						<%	} %>
+					</div>
+					<div class="game_action_split_decision_area">
 						<button type="submit">
-							<%if(actionAisEnd == null && actionBisEnd == null){%>
-								それぞれの
-							<% } %>
-							アクションを確定
+								<%if(actionAisEnd == null && actionBisEnd == null){%>
+									それぞれの
+								<% } %>
+								アクションを確定
 						</button>
-					</form>
-				</div>
+					</div>
+				</form>
 		<%	} %>
 	</div>
 </body>
