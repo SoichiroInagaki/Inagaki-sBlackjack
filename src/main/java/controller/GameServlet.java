@@ -18,20 +18,17 @@ import model.Result;
 
 @WebServlet("/GameServlet")
 public class GameServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
        
-    //ゲーム開始時に用いるメソッド
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+    //ゲーム開始時はdoGetメソッドを用いる
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
 		
-		//処理に必要な変数等を準備
+		//保持する情報の一部はセッションスコープで保持する
 		HttpSession session = request.getSession();
-		Player player = (Player) session.getAttribute("player");
-		int id = player.getId();
-		int chip = Integer.valueOf(request.getParameter("bet"));
-		String message = null;
-		String nextPage = null;
 		
-		//スプリット時にセッションに保持される情報を初期化
+		/* ゲームのリメイク時、以前のゲームで
+		 * スプリットしていた際にセッションに保持される情報を初期化する*/
 		session.setAttribute("actionAisEnd", null);
 		session.setAttribute("actionBisEnd", null);
 		session.setAttribute("splitA", null);
@@ -41,82 +38,89 @@ public class GameServlet extends HttpServlet {
 		session.setAttribute("resultOfB", null);
 		session.setAttribute("pairOfA", null);
 		
-		//カードを準備
+		//カードを準備し、ディーラーとプレイヤーに手札を配る
 		Deck deck = new Deck();
 		PlayerInGame playerInGame = new PlayerInGame();
 		Dealer dealer = new Dealer();
 		playerInGame.prepareHand(deck);
 		dealer.prepareHand(deck);
 		
-		//DB処理を行う
-		try {
-			PlayerDao playerDao = new PlayerDao();
-			playerDao.bet(id, chip);
-			
-			//スプリット判定
-			boolean canSplit = playerInGame.checkSplit();
-			if(canSplit) {
-				request.setAttribute("canSplit", canSplit);
-				int totalChips = playerDao.getChip(player.getId());
-				request.setAttribute("totalChips", totalChips);
-				boolean pairOfA = playerInGame.checkAPair();
-				if(pairOfA) {
-					session.setAttribute("pairOfA", pairOfA);
-				}
-			}
-			
-			//ブラックジャック判定
-			//ブラックジャックが完成していた場合、結果画面に遷移する
-			//完成していなければ、ゲーム画面に遷移する
-			if(playerInGame.checkBlackjack() && !(dealer.checkBlackjack())) {
-				message = "BLACKJACK!!";
-				request.setAttribute("blackjackMessageForPlayer", message);
-				message = "ディーラーの手札はブラックジャックではなかったので、あなたの勝ちです！";
-				request.setAttribute("blackjackMessageForDealer", message);
-				double calculatedChip = (chip * 2.5);
-				int cashBackedChip = (int)calculatedChip;
-				Result.win(request, cashBackedChip);
-				playerDao.cashBack(id, cashBackedChip);
-				playerDao.updateRecord(player, "win");
-				nextPage = "result.jsp";
-			}else if(playerInGame.checkBlackjack() && dealer.checkBlackjack()) {
-				message = "BLACKJACK!!";
-				request.setAttribute("blackjackMessageForPlayer", message);
-				message = "ディーラーの手札もブラックジャックでした！このゲームは引き分けです";
-				request.setAttribute("blackjackMessageForDealer", message);
-				Result.draw(request, chip);
-				playerDao.cashBack(id, chip);
-				playerDao.updateRecord(player, "draw");
-				nextPage = "result.jsp";
-			}else if(!(playerInGame.checkBlackjack()) && dealer.checkBlackjack()) {
-				message = "ディーラーの手札はブラックジャックでした。お気の毒ですが、あなたの負けです";
-				request.setAttribute("blackjackMessageForDealer", message);
-				Result.lose(request, chip);
-				playerDao.updateRecord(player, "lose");
-				nextPage = "result.jsp";
-			}else {
-				nextPage = "in-game.jsp";
-			}
-		}catch(BlackjackException e) {
-			//エラーメッセージを表示させる
-			message = e.getMessage();
-			request.setAttribute("message", message);
-			//画面遷移先はゲーム開始画面を指定
-			nextPage = "play.jsp";
-		}
-		
-		
-		//チップ・カード状況をセッションに保持
+		//チップ・カード状況は複数の画面で共有するため、セッションに保持
+		int chip = Integer.valueOf(request.getParameter("bet"));
 		session.setAttribute("bettingChip", chip);
 		session.setAttribute("deck", deck);
 		session.setAttribute("playerInGame", playerInGame);
 		session.setAttribute("dealer", dealer);
 		
+		// 画面遷移用の変数を宣言
+		String message = null;
+		String nextPage = null;
+		
+		//DBを利用する処理を行う
+		try {
+			//DB接続用に、プレイヤーのDaoインスタンスを取得
+			Player player = (Player) session.getAttribute("player");
+			PlayerDao playerDao = new PlayerDao();
+			
+			//賭けられたチップ枚数分、DBに登録されているチップ総量を減らす
+			playerDao.bet(player.getId(), chip);
+			
+			//スプリット可能か判定する
+			if(playerInGame.checkSplit()) {
+				
+				/* 同じ数字のペアなら、スプリット可能であるという情報・
+				 * プレイヤーの保有チップ枚数をリクエストスコープに保持*/
+				request.setAttribute("canSplit", true);
+				int totalChips = playerDao.getChip(player.getId());
+				request.setAttribute("totalChips", totalChips);
+				
+				//さらに、Aのペアなら、その旨の情報をセッションスコープに保持
+				if(playerInGame.checkAPair()) {
+					session.setAttribute("pairOfA", true);
+				}
+			}
+			
+			//ブラックジャック判定
+			/* プレイヤーかディーラーのどちらかのブラックジャックが
+			 * 完成していた場合、結果画面に遷移する*/
+			if(playerInGame.checkBlackjack() && !dealer.checkBlackjack()) {
+				Result.winOfBlackjack(request);
+				double calculatedChip = (chip * 2.5);
+				int cashBackedChip = (int)calculatedChip;
+				Result.win(request, cashBackedChip);
+				playerDao.cashBack(player.getId(), cashBackedChip);
+				playerDao.updateRecord(player, "win");
+				nextPage = "result.jsp";
+			}else if(playerInGame.checkBlackjack() && dealer.checkBlackjack()) {
+				Result.drawOfBlackjack(request);
+				Result.draw(request, chip);
+				playerDao.cashBack(player.getId(), chip);
+				playerDao.updateRecord(player, "draw");
+				nextPage = "result.jsp";
+			}else if(!(playerInGame.checkBlackjack()) && dealer.checkBlackjack()) {
+				Result.loseOfBlackjack(request);
+				Result.lose(request, chip);
+				playerDao.updateRecord(player, "lose");
+				nextPage = "result.jsp";
+			//ブラックジャックが完成していなければ、ゲーム画面に遷移する
+			}else {
+				nextPage = "in-game.jsp";
+			}
+		}catch(BlackjackException e) {
+			//エラーメッセージがある時は表示させる
+			message = e.getMessage();
+			request.setAttribute("message", message);
+			//画面遷移先はゲーム開始画面を指定
+			nextPage = "play.jsp";
+		}
+		//処理が終わったら画面遷移を行う
 		request.getRequestDispatcher(nextPage).forward(request, response);
 	}
 	
-	//ゲーム進行中に用いるメソッド
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
+	
+	//ゲーム進行中はdoPostメソッドを用いる
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {		
 		
 		//処理に必要な変数を用意
 		String nextPage = null;
