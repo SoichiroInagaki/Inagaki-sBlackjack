@@ -14,12 +14,11 @@
 		String hit = (String) request.getAttribute("hit");
 		String splitBHit = (String) request.getAttribute("splitBHit");
 		Boolean splitting = (Boolean) session.getAttribute("splitting");
-		Boolean canSplit = (Boolean)request.getAttribute("canSplit");
 		Boolean pairOfA = (Boolean)session.getAttribute("pairOfA");
 		PlayerInGame splitA = (PlayerInGame) session.getAttribute("splitA");
 		PlayerInGame splitB = (PlayerInGame) session.getAttribute("splitB");
 		Integer totalChips = (Integer) request.getAttribute("totalChips");
-		Integer bettingChips = (Integer) session.getAttribute("bettingChip");
+		Integer bettingChips = (Integer) session.getAttribute("bettingChips");
 		String actionAisEnd = (String) session.getAttribute("actionAisEnd");
 		String actionBisEnd = (String) session.getAttribute("actionBisEnd");%>
 	
@@ -43,11 +42,11 @@
 					<%	}
 				}%>
 			で、現在のカードの数値の合計は<span class="red_text"><%=playerInGame.getPoint()%></span>です</p>
-		<% if(canSplit != null){ %>
+		<% if(playerInGame.checkSplittable()){ %>
 			<p class="red_text">また、初期手札のカードが同じ数字のカードのため、スプリットが可能です</p>
 			<p>現在保有中のチップ枚数：<%=totalChips%></p>
 			<p>スプリット時に再度賭けるチップ枚数：<%=bettingChips %></p>
-			<% if(pairOfA != null){ %>
+			<% if(playerInGame.checkPairOfA()){ %>
 				<p class="alert">※Aのペアをスプリットした場合、追加のヒットは行えません</p>
 			<% } %>
 		<% } %>
@@ -120,7 +119,7 @@
 				<form action="GameServlet" method="post">
 					<button type="submit" name="clicked" value="hit">HIT</button>
 					<button type="submit" name="clicked" value="stand">STAND</button>
-					<% 	if(canSplit != null){ %>
+					<% 	if(playerInGame.checkSplittable()){ %>
 							<button type="submit" name="clicked" value="split">SPLIT</button>
 					<% 	} %>
 				</form>

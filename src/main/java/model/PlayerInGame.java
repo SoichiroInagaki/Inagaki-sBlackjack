@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 public class PlayerInGame extends Gambler {
 	
+	private boolean splittable = false;
+	private boolean pairOfA = false;
+	
 	@Override
 	public void hit(Deck deck) {
 		// TODO 自動生成されたメソッド・スタブ
@@ -12,21 +15,19 @@ public class PlayerInGame extends Gambler {
 	}
 	
 	//初期手札がスプリット可能か確認するメソッド
-	public boolean checkSplit() {
+	public boolean checkSplittable() {
 		if(hand.get(0).getNumber() == hand.get(1).getNumber()) {
-			return true;
-		}else {
-			return false;
+			splittable = true;
 		}
+		return splittable;
 	}
 	
 	//初期手札がAのペアか確認するメソッド
-	public boolean checkAPair() {
+	public boolean checkPairOfA() {
 		if((hand.get(0).getNumber() == 1) && (hand.get(1).getNumber() == 1)){
-			return true;
-		}else {
-			return false;
+			this.pairOfA = true;
 		}
+		return pairOfA;
 	}
 	
 	//スプリットされた手札を用意するメソッド
@@ -40,6 +41,8 @@ public class PlayerInGame extends Gambler {
 	public Card getHandCard(int i) {
 		return hand.get(i);
 	}
+	
+	
 	
 	
 }

@@ -47,7 +47,7 @@ public class GameServlet extends HttpServlet {
 		
 		//チップ・カード状況は複数の画面で共有するため、セッションに保持
 		int chip = Integer.valueOf(request.getParameter("bet"));
-		session.setAttribute("bettingChip", chip);
+		session.setAttribute("bettingChips", chip);
 		session.setAttribute("deck", deck);
 		session.setAttribute("playerInGame", playerInGame);
 		session.setAttribute("dealer", dealer);
@@ -66,18 +66,12 @@ public class GameServlet extends HttpServlet {
 			playerDao.bet(player.getId(), chip);
 			
 			//スプリット可能か判定する
-			if(playerInGame.checkSplit()) {
+			if(playerInGame.checkSplittable()) {
 				
-				/* 同じ数字のペアなら、スプリット可能であるという情報・
-				 * プレイヤーの保有チップ枚数をリクエストスコープに保持*/
-				request.setAttribute("canSplit", true);
+				/* 同じ数字のペアならプレイヤーの保有チップ枚数をリクエストスコープに保持*/
 				int totalChips = playerDao.getChip(player.getId());
 				request.setAttribute("totalChips", totalChips);
 				
-				//さらに、Aのペアなら、その旨の情報をセッションスコープに保持
-				if(playerInGame.checkAPair()) {
-					session.setAttribute("pairOfA", true);
-				}
 			}
 			
 			//ブラックジャック判定
@@ -131,7 +125,7 @@ public class GameServlet extends HttpServlet {
 		PlayerInGame playerInGame = (PlayerInGame) 
 				session.getAttribute("playerInGame");
 		Deck deck = (Deck) session.getAttribute("deck");
-		int chip = (Integer)session.getAttribute("bettingChip");
+		int chip = (Integer)session.getAttribute("bettingChips");
 		Boolean splitting = (Boolean) session.getAttribute("splitting");
 		String action = null;
 		PlayerInGame splitA = (PlayerInGame) session.getAttribute("splitA");
