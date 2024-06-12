@@ -6,7 +6,12 @@ public class PlayerInGame extends Gambler {
 	
 	private boolean splittable = false;
 	private boolean pairOfA = false;
+	private boolean splitA = false;
+	private boolean splitB = false;
+	private boolean actionIsEnd = false;
+	private String result = null;
 	
+	//山札からカードを1枚引くメソッド
 	@Override
 	public void hit(Deck deck) {
 		// TODO 自動生成されたメソッド・スタブ
@@ -42,7 +47,34 @@ public class PlayerInGame extends Gambler {
 		return hand.get(i);
 	}
 	
+	//スプリット時のメソッド群
+	public boolean isSplitA() {
+		return splitA;
+	}
+	public void becomeSplitA() {
+		this.splitA = true;
+	}
+	public boolean isSplitB() {
+		return splitB;
+	}
+	public void becomeSplitB() {
+		this.splitB = true;
+	}
 	
+	//手札のアクションの終了に関するメソッド群
+	public void actionBecomeEnd() {
+		this.actionIsEnd = true;
+	}
+	public boolean actionIsEnd() {
+		return actionIsEnd;
+	}
 	
+	//ゲーム結果のゲッター・セッターメソッド
+	public void setResult(String result) {
+		this.result = result;
+	}
+	public String getResult() {
+		return result;
+	}
 	
 }

@@ -1,6 +1,8 @@
 package controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import dao.PlayerDao;
 import exception.BlackjackException;
@@ -44,12 +46,14 @@ public class GameServlet extends HttpServlet {
 		Dealer dealer = new Dealer();
 		playerInGame.prepareHand(deck);
 		dealer.prepareHand(deck);
+		List<PlayerInGame> playerHandList = new ArrayList<>();
+		playerHandList.add(playerInGame);
 		
 		//チップ・カード状況は複数の画面で共有するため、セッションに保持
 		int chip = Integer.valueOf(request.getParameter("bet"));
 		session.setAttribute("bettingChips", chip);
 		session.setAttribute("deck", deck);
-		session.setAttribute("playerInGame", playerInGame);
+		session.setAttribute("playerHandList", playerHandList);
 		session.setAttribute("dealer", dealer);
 		
 		// 画面遷移用の変数を宣言
@@ -65,13 +69,10 @@ public class GameServlet extends HttpServlet {
 			//賭けられたチップ枚数分、DBに登録されているチップ総量を減らす
 			playerDao.bet(player.getId(), chip);
 			
-			//スプリット可能か判定する
+			//スプリット可能なら、プレイヤーの保有チップ枚数をリクエストスコープに保持
 			if(playerInGame.checkSplittable()) {
-				
-				/* 同じ数字のペアならプレイヤーの保有チップ枚数をリクエストスコープに保持*/
 				int totalChips = playerDao.getChip(player.getId());
 				request.setAttribute("totalChips", totalChips);
-				
 			}
 			
 			//ブラックジャック判定
@@ -122,6 +123,8 @@ public class GameServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		Player player = (Player) session.getAttribute("player");
 		Dealer dealer = (Dealer) session.getAttribute("dealer");
+		List<PlayerInGame> playerHandList = 
+				(List<PlayerInGame>) session.getAttribute("playerHandList");
 		PlayerInGame playerInGame = (PlayerInGame) 
 				session.getAttribute("playerInGame");
 		Deck deck = (Deck) session.getAttribute("deck");
@@ -185,7 +188,7 @@ public class GameServlet extends HttpServlet {
 						request.setAttribute("hit", message);
 					}
 					//バーストしたかを判定する
-					if(playerInGame.confirmBust()) {
+					if(playerInGame.checkBust()) {
 						//バーストしていた場合
 						//スプリットしている場合、その手札にこれ以上アクションを行えないようにする
 						//敗北したという属性もセッションに付与
@@ -208,14 +211,14 @@ public class GameServlet extends HttpServlet {
 							}
 							if(gameResult != null && gameResultOfB != null) {
 								message = "両方の手札がバーストしてしまいました。あなたの負けです";
-								request.setAttribute("bustedPlayer", message);
+								request.setAttribute("bustingPlayer", message);
 								gameResult = "splitWBust";
 								gameResultOfB = "splitWBust";
 							}
 						//通常プレイ時はゲーム終了
 						}else {
 							message = "21点を超えたのでバーストしてしまいました。あなたの負けです";
-							request.setAttribute("bustedPlayer", message);
+							request.setAttribute("bustingPlayer", message);
 							gameEnd = true;
 							gameResult = "lose";
 						}
@@ -254,9 +257,9 @@ public class GameServlet extends HttpServlet {
 							}else if(splitting != null && gameResultOfB != null && playerInGame.getPoint() > 21){
 								message = "21点を超えてバーストしているため、あなたの負けです";
 								request.setAttribute("situationMessageOfB", message);
-							}else if(dealer.confirmBust()) {
+							}else if(dealer.checkBust()) {
 								message = "21点を超えたので、ディーラーはバーストしました！";
-								request.setAttribute("bustedDealer", message);
+								request.setAttribute("bustingDealer", message);
 								//スプリットした両方の手札をスタンドしていた場合
 								if(splitting != null && gameResult == null && gameResultOfB == null) {	
 									gameResult = "splitWStand";

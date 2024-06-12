@@ -12,7 +12,7 @@
 		PlayerInGame playerInGame = 
 			(PlayerInGame) session.getAttribute("playerInGame");
 		String hit = (String) request.getAttribute("Hit");
-		String bustedPlayer = (String) request.getAttribute("bustedPlayer");
+		String bustingPlayer = (String) request.getAttribute("bustingPlayer");
 		String resultMessage = (String) request.getAttribute("resultMessage");
 		String resultMessageOfB = (String) request.getAttribute("resultMessageOfB");
 		String chipMessage = (String) request.getAttribute("chipMessage");
@@ -20,7 +20,7 @@
 		Integer countedHit = (Integer) request.getAttribute("countHit");
 		String blackjackMessageForPlayer = (String) request.getAttribute("blackjackMessageForPlayer");
 		String blackjackMessageForDealer = (String) request.getAttribute("blackjackMessageForDealer");
-		String bustedDealer = (String) request.getAttribute("bustedDealer");
+		String bustingDealer = (String) request.getAttribute("bustingDealer");
 		String situationMessage = (String) request.getAttribute("situationMessage");
 		String situationMessageOfB = (String) request.getAttribute("situationMessageOfB");
 		String actionAisEnd = (String) session.getAttribute("actionAisEnd");
@@ -62,8 +62,8 @@
 				で、現在のカードの数値の合計は<span class="red_text"><%=playerInGame.getPoint()%></span>です</p>
 			<p class="red_text"><%=actionBisEnd%></p>
 		<% } %>
-		<% if(bustedPlayer != null){ %>
-			<p><%=bustedPlayer %></p>
+		<% if(bustingPlayer != null){ %>
+			<p><%=bustingPlayer %></p>
 			<p style="color: blue"><%=resultMessage %></p>
 			<p><%=chipMessage %></p>
 		<% }else{ %>
@@ -92,12 +92,12 @@
 						で、ディーラーの数値の合計は
 						<span class="red_text"><%=dealer.getPoint()%></span>となりました</p>
 				<% } %>
-				<%if((bustedDealer != null && splitWStand != null) || (bustedDealer != null && splitting == null)){%>
-					<p><%=bustedDealer%></p>
+				<%if((bustingDealer != null && splitWStand != null) || (bustingDealer != null && splitting == null)){%>
+					<p><%=bustingDealer%></p>
 					<p style="color: blue"><%=resultMessage %></p>
 					<p><%=chipMessage %></p>
-				<%}else if (bustedDealer != null && splitting != null){%>
-					<p><%=bustedDealer %></p>
+				<%}else if (bustingDealer != null && splitting != null){%>
+					<p><%=bustingDealer %></p>
 					<p>一組目の手札について、<%=situationMessage %></p>
 					<p style="color: blue"><%=resultMessage %></p>
 					<p><%=chipMessage %></p>

@@ -21,7 +21,7 @@ public abstract class Gambler {
 	public abstract void hit(Deck deck);
 	
 	//バースト状態を確認するメソッド
-	public boolean confirmBust() {
+	public boolean checkBust() {
 		if(point <= 21) {
 			bust = false;
 		}else {
@@ -37,7 +37,7 @@ public abstract class Gambler {
 			switch(card.getNumber()) {
 				case 1:
 					point += 11;
-					if(confirmBust()) {
+					if(checkBust()) {
 						point += -10;
 					}
 					break;

@@ -1,6 +1,7 @@
 package model;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -117,7 +118,96 @@ public class Result {
 		
 		/*ディーラー側のメッセージのみのため、
 		 * 直接リクエストスコープにメッセージを保持させる */
-		request.setAttribute("blackjackMessageForDealer", "ディーラーの手札はブラックジャックでした。お気の毒ですが、あなたの負けです");
+		request.setAttribute
+			("blackjackMessageForDealer", "ディーラーの手札はブラックジャックでした。お気の毒ですが、あなたの負けです");
 	}
 	
+	//バーストで負けた時の定型文をセットするメソッド
+	public static void loseOfBust
+	(PlayerInGame playerInGame, HttpServletRequest request) {
+		if(playerInGame.checkBust()) {
+			playerInGame.setResult("lose");
+			String message = "21点を超えてバーストしているため、あなたの負けです";
+			if(playerInGame.isSplitA()) {
+				request.setAttribute("situationMessage", message);
+			}else if(playerInGame.isSplitB()){
+				request.setAttribute("situationMessageOfB", message);
+			}else{
+				message = "21点を超えたのでバーストしてしまいました。あなたの負けです";
+				request.setAttribute("bustingPlayer", message);
+			}
+		}
+	}
+	
+	
+	//ディーラーのヒット処理を行うメソッド
+	public static void actionOfDealer
+		(Dealer dealer, Deck deck, HttpServletRequest request) {
+		dealer.hit(deck);
+		request.setAttribute("countHit", dealer.countHit());
+		if(dealer.checkBust()){
+			String message = "21点を超えたので、ディーラーはバーストしました！";
+			request.setAttribute("bustingDealer", message);
+		}
+	}
+	
+	//ディーラーのバーストで勝利したときのメソッド
+	public static void winOfBustingDealer
+		(Dealer dealer, PlayerInGame playerInGame, HttpServletRequest request) {
+		
+		if(dealer.checkBust() && !playerInGame.checkBust()) {
+			String message = "スタンドしていたため、あなたの勝利です！";
+			if(playerInGame.isSplitB()) {
+				request.setAttribute("situationMessageOfB", message);
+			}else {
+				request.setAttribute("situationMessage", message);
+			}
+		}
+	}
+	
+	//数値の合計で勝敗を判定する際のメソッド
+	public static void comparePoint
+		(Dealer dealer, PlayerInGame playerInGame, HttpServletRequest request) {
+		
+		String message = null;
+		//勝った場合
+		if(!playerInGame.checkBust() && dealer.getPoint() < playerInGame.getPoint()) {
+			message = "あなたの方が21点に近いため、あなたの勝利です！";
+			playerInGame.setResult("win");
+			if(playerInGame.isSplitB()) {
+				request.setAttribute("situationMessageOfB", message);
+			}else {
+				request.setAttribute("situationMessage", message);
+			}
+		//引き分けの場合
+		}else if(dealer.getPoint() == playerInGame.getPoint()) {
+			message = "合計点数が同じなので、このゲームは引き分けです";
+			playerInGame.setResult("draw");
+			if(playerInGame.isSplitB()) {
+				request.setAttribute("situationMessageOfB", message);
+			}else {
+				request.setAttribute("situationMessage", message);
+			}
+		//負けた場合
+		}else if(dealer.getPoint() > playerInGame.getPoint()){
+			message = "ディーラーの方が21点に近いため、ディーラーの勝利です";
+			playerInGame.setResult("lose");
+			if(playerInGame.isSplitB()) {
+				request.setAttribute("situationMessageOfB", message);
+			}else {
+				request.setAttribute("situationMessage", message);
+			}
+		}
+	}
+	
+	//ディーラーのバーストでスプリットした両方の手札が勝った場合
+	public static void splitWStand
+		(Dealer dealer, List<PlayerInGame> list, HttpServletRequest request) {
+		if(dealer.checkBust() && list.get(0).getResult().equals("win") 
+				&& list.get(1).getResult().equals("win")) {
+			
+			
+			
+		}
+	}
 }

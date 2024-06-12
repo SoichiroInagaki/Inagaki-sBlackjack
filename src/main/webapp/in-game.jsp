@@ -9,8 +9,9 @@
 </head>
 <body>
 	<%	Dealer dealer = (Dealer) session.getAttribute("dealer");
-		PlayerInGame playerInGame = 
-			(PlayerInGame) session.getAttribute("playerInGame");
+		List<PlayerInGame> playerHandList = 
+			(List<playerInGame>) session.getAttrinbute("playerHandList");
+		PlayerInGame playerInGame = (PlayerInGame) session.getAttribute("playerInGame");
 		String hit = (String) request.getAttribute("hit");
 		String splitBHit = (String) request.getAttribute("splitBHit");
 		Boolean splitting = (Boolean) session.getAttribute("splitting");
