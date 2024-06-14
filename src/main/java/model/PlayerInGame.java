@@ -4,11 +4,13 @@ import java.util.ArrayList;
 
 public class PlayerInGame extends Gambler {
 	
+	private int chip = 0;
 	private boolean splittable = false;
 	private boolean pairOfA = false;
 	private boolean splitA = false;
 	private boolean splitB = false;
 	private boolean actionIsEnd = false;
+	private boolean splitWStand = false;
 	private String result = null;
 	
 	//山札からカードを1枚引くメソッド
@@ -17,6 +19,14 @@ public class PlayerInGame extends Gambler {
 		// TODO 自動生成されたメソッド・スタブ
 		hand.add(deck.drawCard());
 		calculatePoint();
+	}
+	
+	//betされたチップのセッター・ゲッターメソッド
+	public void setChip(int chip) {
+		this.chip = chip;
+	}
+	public int getChip() {
+		return chip;
 	}
 	
 	//初期手札がスプリット可能か確認するメソッド
@@ -67,6 +77,17 @@ public class PlayerInGame extends Gambler {
 	}
 	public boolean actionIsEnd() {
 		return actionIsEnd;
+	}
+	
+	/* 
+	 * スプリット時、ディーラーがバーストしていて、
+	 * プレイヤーの両方の手札がスタンドしている状況を示すメソッド
+	 */
+	public void becomeSplitWStand() {
+		this.splitWStand = true;
+	}
+	public boolean isSplitWStand() {
+		return splitWStand;
 	}
 	
 	//ゲーム結果のゲッター・セッターメソッド

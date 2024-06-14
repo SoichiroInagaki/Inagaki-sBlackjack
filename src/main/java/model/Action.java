@@ -14,11 +14,17 @@ public class Action {
 		splitA.becomeSplitA();
 		PlayerInGame splitB = new PlayerInGame();
 		splitB.becomeSplitB();
+		
+		//スプリット前の手札からスプリット時の手札を生成
 		PlayerInGame playerInGame = list.get(0);
 		splitA.prepareSplit(playerInGame.getHandCard(0), deck);
 		splitB.prepareSplit(playerInGame.getHandCard(1), deck);
 		
-		//Aのペアをスプリットした時はアクションを終了にさせる
+		//スプリット後の手札にもチップのbet額を登録
+		splitA.setChip(playerInGame.getChip());
+		splitB.setChip(playerInGame.getChip());
+		
+		//もしAのペアをスプリットしていたらアクションを終了にさせる
 		if(playerInGame.checkPairOfA()) {
 			splitA.actionBecomeEnd();
 			splitB.actionBecomeEnd();
@@ -64,30 +70,28 @@ public class Action {
 		(PlayerInGame playerInGame, HttpServletRequest request) {
 		
 		//アクションが終了している(bust or stand)手札に対して処理を実行
-		if(playerInGame.actionIsEnd()) {
-			String message;
+		String message;
 			
-			//バーストしている場合
-			if(playerInGame.checkBust()) {
-				message = "この手札はバーストしています";
+		//バーストしている場合
+		if(playerInGame.checkBust()) {
+			message = "この手札はバーストしています";
 				
-				//バーストしている手札を判定してメッセージを登録
-				if(playerInGame.isSplitA()) {
-					request.setAttribute("actionAisEnd", message);
-				}else if(playerInGame.isSplitB()) {
-					request.setAttribute("actionBisEnd", message);
-				}
+			//バーストしている手札を判定してメッセージを登録
+			if(playerInGame.isSplitA()) {
+				request.setAttribute("actionAisEnd", message);
+			}else if(playerInGame.isSplitB()) {
+				request.setAttribute("actionBisEnd", message);
+			}
+		
+		//バーストしていなかった場合
+		}else {
 			
-			//バーストしていなかった場合
-			}else {
-				
-				//スタンドしている手札を判定してメッセージを登録
-				message = "この手札でスタンドしています";
-				if(playerInGame.isSplitA()) {
-					request.setAttribute("actionAisEnd", message);
-				}else if(playerInGame.isSplitB()) {
-					request.setAttribute("actionBisEnd", message);
-				}
+			//スタンドしている手札を判定してメッセージを登録
+			message = "この手札でスタンドしています";
+			if(playerInGame.isSplitA()) {
+				request.setAttribute("actionAisEnd", message);
+			}else if(playerInGame.isSplitB()) {
+				request.setAttribute("actionBisEnd", message);
 			}
 		}
 	}
