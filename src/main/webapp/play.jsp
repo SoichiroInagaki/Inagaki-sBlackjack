@@ -15,7 +15,7 @@
 	<%	}
 		Integer chip = (Integer) request.getAttribute("chip");%>
 	<p>現在保有中のチップ枚数：<%=chip%></p>
-	<form action="GameServlet" method="get">
+	<form action="NewGameServlet" method="post">
 		<p style="margin-top: 2em">ベット額</p>
 		<select name="bet" required>
 			<option value="">SELECT</option>
@@ -33,8 +33,8 @@
 		<br>
 		<button type="submit">賭け金を設定してゲームを開始する</button>
 	</form>
-	<p class="bottom_link"><a href="menu.jsp">メインメニュー画面に戻る</a></p>
-
-
+	<button onclick="location.href='menu.jsp'">
+		メインメニュー画面に戻る
+	</button>
 </body>
 </html>

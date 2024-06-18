@@ -22,8 +22,17 @@ button{
 
 button:hover{
 	opacity: 0.7;
-	font-size: 1.2em;
 	box-shadow: 0 1px 2px  black;
+}
+
+.button_delete{
+	background-color: orangered;
+	box-shadow: 0 2px 3px black;
+}
+
+.delete_choice_button{
+	width: 150px;
+	height: 60px;
 }
 
 input{
@@ -69,7 +78,6 @@ input[type="radio"]:checked + label{
 
 .split_action_label:hover{
 	opacity: 0.7;
-	font-size: 1.1em;
 	box-shadow: 0 1px 1px blue;
 }
 
@@ -111,39 +119,46 @@ input[type="radio"]:checked + label{
 	margin: 0.5em;
 }
 
-.delete_choice_button{
-	width: 150px;
-	height: 60px;
+.game_area{
+	display: inline-block;
+	text-align: center;
+	width:960px;
+	height:540px;
+	position: relative;
 }
 
 .game_text_area{
-	position: relative;
-	left: 925px;
+	position: absolute;
+	left: 70%;
+	width: 30%;
+	height: 100%;
 	text-align: left;
-	width: 305px;
-	height: 550px;
+	font-size: 19px;
+	line-height: 0.9;
 	border-left: solid 2px green;
-	padding: 0 1em 0 1em;
 	margin: 0;
 	overflow: auto;
+}
+
+.game_text_area p{
+	padding: 0 1em;
 }
 
 .game_dealer_area{
 	position:absolute;
 	top: 0;
 	left: 0;
-	width: 925px;
-	height: 200px;
+	width: 70%;
+	height: 40%;
 	border-bottom: solid 2px green;
-	margin: 0;
 }
 
 .game_player_area{
 	position:absolute;
-	top: 220px;
+	top: 40%;
 	left: 0;
-	width: 925px;
-	height: 200px;
+	width: 70%;
+	height: 40%;
 	border-bottom: solid 2px green;
 }
 
@@ -151,58 +166,59 @@ input[type="radio"]:checked + label{
 	position:absolute;
 	top: 0;
 	left: 0;
-	width: 462px;
-	height: 200px;
+	width: 50%;
+	height: 100%;
 	overflow: auto;
 }
 
 .game_split_area_B{
 	position:absolute;
 	top: 0;
-	left: 462px;
-	width: 462px;
-	height: 200px;
+	left: 50%;
+	width: 50%;
+	height: 100%;
 	border-left: dashed green 2px;
 	overflow: auto;
 }
 
 .game_action_area{
 	position:absolute;
-	top: 440px;
+	top: 80%;
 	left: 0;
-	width: 925px;
-	height: 100px;
+	width: 70%;
+	height: 20%;
 }
 
 .game_actionA_area{
 	position:absolute;
 	top: 0px;
 	left: 0;
-	width: 325px;
-	height: 100px;
+	width: 37%;
+	height: 100%;
 }
 
 .game_actionB_area{
 	position:absolute;
 	top: 0px;
-	left: 325px;
-	width: 325px;
-	height: 100px;
+	left: 37%;
+	width: 37%;
+	height: 100%;
 	border-left: dashed green 2px;
 }
 
 .game_action_split_decision_area{
 	position:absolute;
-	top: 0px;
-	left: 650px;
-	width: 275px;
-	height: 100px;
+	top: 0%;
+	left: 74%;
+	width: 26%;
+	height: 100%;
 	border-left: dashed green 2px;
 }
 
 .game_action_end_text{
 	background-color: red;
-	padding: 2px;
+	padding: 2px 0;
+	font-size: 17px;
 }
 
 .red_text{
@@ -215,9 +231,9 @@ input[type="radio"]:checked + label{
 	top: 0;
 	left: 0;
 	font-weight: bold;
-	margin: 0;
 	background-color: orange;
 	box-shadow: 2px 2px 2px red;
 	padding: 3px;
+	margin: 0.5em;
 	z-index: 1;
 }

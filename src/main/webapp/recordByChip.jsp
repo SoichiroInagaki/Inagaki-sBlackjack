@@ -29,6 +29,6 @@
 				</tr>
 		<%	 } %>
 	</table>
-	<p style="margin: 2em"><a href="menu.jsp">メインメニュー画面に戻る</a></p>
+	<button onclick="location.href='menu.jsp'">メインメニュー画面に戻る</button>
 </body>
 </html>

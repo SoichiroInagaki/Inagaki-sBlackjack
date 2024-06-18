@@ -28,6 +28,6 @@
 		<br><br>
 		<button type="submit">新規登録</button>
 	</form>
-	<p class="bottom_link"><a href="login.jsp">ログイン画面に戻る</a></p>
+	<button onclick="location.href='login.jsp'">ログイン画面に戻る</button>
 </body>
 </html>

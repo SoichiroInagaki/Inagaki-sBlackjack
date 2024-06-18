@@ -25,8 +25,10 @@
 		<p style="margin-top: 2em"><label for="delete_password">パスワード</label></p>
 		<input type="password" name="delete_password" id="delete_password" required>
 		<br>
-		<button type="submit">プレイヤーを削除する</button>
+		<button type="submit" class="button_delete">プレイヤーを削除する</button>
 	</form>
-	<p class="bottom_link"><a href="menu.jsp">メインメニュー画面に戻る</a></p>
+	<button onclick="location.href='menu.jsp'" style="margin: 0.5em">
+		メインメニュー画面に戻る
+	</button>
 </body>
 </html>

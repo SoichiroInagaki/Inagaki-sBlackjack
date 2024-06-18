@@ -18,6 +18,6 @@
 		String playerName = (String) request.getAttribute("playerName");%>
 	<p class="alert"><%=message%>が完了しました</p>
 	<p>プレイヤーネーム：<%=playerName%></p>
-	<p class="bottom_link"><a href="login.jsp">ログイン画面に戻る</a></p>
+	<button onclick="location.href='login.jsp'">ログイン画面に戻る</button>
 </body>
 </html>

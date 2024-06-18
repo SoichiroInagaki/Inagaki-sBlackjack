@@ -14,8 +14,12 @@
 		if(player != null){%>
 			<p>本当に「<%=player.getName()%>」のデータを削除しますか？</p>
 			<form action="DeleteServlet" method="get">
-				<button type="submit" name="clicked" value="yes" class="delete_choice_button">はい</button>
-				<button type="submit" name="clicked" value="no" class="delete_choice_button">いいえ</button>
+				<button type="submit" name="clicked" value="yes" class="delete_choice_button button_delete">
+					はい
+				</button>
+				<button type="submit" name="clicked" value="no" class="delete_choice_button">
+					いいえ
+				</button>
 			</form>
 	<%	} %>
 </body>
