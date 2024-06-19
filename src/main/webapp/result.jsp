@@ -14,9 +14,10 @@
 			(List<PlayerInGame>) session.getAttribute("playerHandList");%>
 		
 	<div class="game_area">
+		<div class="game_text_name_area">
+			<p class="game_gambler_name">&lt; NAVIGATION &gt;</p>
+		</div>
 		<div class="game_text_area">
-			<div class="game_gambler_name">&lt; NAVIGATION &gt;</div>
-			<div style="margin-top: 1em"><br></div>
 			<%	String hit = (String) request.getAttribute("hit");
 				if(hit != null){ %>
 					<p><%=hit%></p>
@@ -137,7 +138,7 @@
 		</div>
 		<div class="game_dealer_area">
 			<p class="game_gambler_name">&lt; DEALER &gt;</p>
-			<div style="margin-top: 1em"><br></div>
+			<div style="margin-top: 1.3em"><br></div>
 			<%	for(int i = 0; i < dealer.countHand(); i++ ){ %>
 					<img alt="<%=dealer.getHandCardStr(i)%>" 
 						src="<%=request.getContextPath()%>/img/<%=dealer.getHandCardStr(i)%>.png"/>
@@ -146,7 +147,7 @@
 		<div class="game_player_area">
 			<p class="game_gambler_name">&lt; PLAYER &gt;</p>
 			<%	if(!playerHandList.get(0).isSplitA()){ %>
-					<div style="margin-top: 1em"><br></div>
+					<div style="margin-top: 1.3em"><br></div>
 					<%	for(int i = 0; i < playerHandList.get(0).countHand(); i++ ){ %>
 							<img alt="<%=playerHandList.get(0).getHandCardStr(i)%>" 
 									src="<%=request.getContextPath()%>/img/
@@ -154,30 +155,26 @@
 					<%	} 
 				}else{%>
 					<div class="game_split_area_A">
-						<div class="parent">
-						<div style="margin-top: 1em"><br></div>
+						<div style="margin-top: 1.3em"><br></div>
 						<%	for(int i = 0; i < playerHandList.get(0).countHand(); i++ ){ %>
 								<img alt="<%=playerHandList.get(0).getHandCardStr(i)%>" 
 									src="<%=request.getContextPath()%>/img/
 									<%=playerHandList.get(0).getHandCardStr(i)%>.png"/>
 						<%	} %>
 					</div>
-					</div>
 					<div class="game_split_area_B">
-					<div class="parent">
-						<div style="margin-top: 1em"><br></div>
+						<div style="margin-top: 1.3em"><br></div>
 						<%	for(int i = 0; i < playerHandList.get(1).countHand(); i++ ){ %>
 								<img alt="<%=playerHandList.get(1).getHandCardStr(i)%>" 
 									src="<%=request.getContextPath()%>/img/
 									<%=playerHandList.get(1).getHandCardStr(i)%>.png"/>
 						<%	} %>
 					</div>
-					</div>
 			<%	} %>
 		</div>
 		<div class="game_action_area">
 			<p class="game_gambler_name">&lt; ACTION &gt;</p>
-			<div style="margin-top: 1em"><br></div>
+			<div style="margin-top: 1.3em"><br></div>
 			<form action="AfterGameServlet" method="get">
 				<button type="submit" name="clicked" value="playAgain">もう一度遊ぶ</button>
 				<button type="submit" name="clicked" value="backHome">メインメニュー画面に戻る</button>
