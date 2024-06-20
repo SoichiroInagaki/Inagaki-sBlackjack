@@ -138,10 +138,10 @@ input[type="radio"]:checked + label{
 
 .game_text_area{
 	position: absolute;
-	top:7%;
+	top:0%;
 	left: 70%;
 	width: 30%;
-	height: 93%;
+	height: 100%;
 	text-align: left;
 	font-size: 19px;
 	line-height: 0.9;

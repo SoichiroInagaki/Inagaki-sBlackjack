@@ -20,6 +20,7 @@
 			<p class="game_gambler_name">&lt; NAVIGATION &gt;</p>
 		</div>
 		<div class="game_text_area">
+			<div style="margin-top: 1.3em"><br></div>
 			<p>ディーラーの手札は<%=dealer.getHandCardStr(0)%>と裏向きのカード1枚です</p>
 			<% 	String hit = (String) request.getAttribute("hit");
 				if(hit != null){ %>
