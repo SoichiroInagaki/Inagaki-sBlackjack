@@ -69,7 +69,7 @@ public class DeleteServlet extends HttpServlet {
 			}catch(BlackjackException e) {
 				message = e.getMessage();
 				request.setAttribute("message", message);
-				nextPage = "new_player.jsp";
+				nextPage = "delete.jsp";
 			}
 		}else {
 			message = "プレイヤー削除処理を中断しました";
